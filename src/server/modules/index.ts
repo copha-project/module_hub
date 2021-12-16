@@ -5,11 +5,16 @@ import { ModuleController } from './controller'
 
 export function init(server: Koa) {
   const router = new Router({ prefix: '/api/v1/modules' })
-  const controller = new ModuleController
+  const controller = ModuleController.getInstance() as ModuleController
 
   router.get(
-    '/',
+    '/:id',
     controller.get.bind(controller)
+  )
+  
+  router.get(
+    '/',
+    controller.getAll.bind(controller)
   )
 
   router.post(
@@ -19,7 +24,7 @@ export function init(server: Koa) {
   )
 
   router.delete(
-    '/:name',
+    '/:id',
     controller.delete.bind(controller)
   )
 

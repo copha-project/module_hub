@@ -30,7 +30,6 @@ const LogColorConfig = format.colorize({ all: true })
 export default class Logger {
     logger: any
     constructor(logConf?:{infoPath:string, errPath:string}){
-        console.log('log?????')
         winston.addColors(LogBaseConfig.colors)
         this.logger = createLogger({
             level: 'info',
@@ -65,6 +64,7 @@ export default class Logger {
                 LogColorConfig,
             )
         }))
+        this.info('logger init')
     }
     static async stream(logPath:string){
         const tailProc = spawn('tail', ['-f',logPath])

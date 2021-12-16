@@ -7,7 +7,8 @@ import Manager from "../../class/manager"
 interface Repository {
     findByName(name:string): Promise<Module|undefined>
     add(module:Module): Promise<Module|void>
-    delete(name:string): Promise<void>
+    delete(id:string): Promise<boolean>
+    all(): Promise<Module[]>
 }
 
 export class LocalRepository extends Base implements Repository {
@@ -38,10 +39,15 @@ export class LocalRepository extends Base implements Repository {
 
     }
 
-    async delete(name:string): Promise<void>{
-        const index = this.db.findIndex(e=>e.name === name)
-        if(index === -1) return
+    async delete(id:string): Promise<boolean>{
+        const index = this.db.findIndex(e=>e.id === id)
+        if(index === -1) return false
         this.db.splice(index,1)
+        return true
+    }
+
+    async all(): Promise<Module[]> {
+        return this.db
     }
 
     private get dbFilePath(){
@@ -60,7 +66,12 @@ export class ModuleManager extends Manager{
     return this.repo.add(module)
   }
 
-  public delete(name: string): Promise<void> {
-    return this.repo.delete(name)
+  public async delete(id: string): Promise<boolean> {
+    return this.repo.delete(id)
   }
+
+  public async all(){
+      return this.repo.all()
+  }
+
 }

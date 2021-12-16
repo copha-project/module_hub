@@ -14,9 +14,9 @@ export default class Server extends Base {
     static instance: Server
     private app: any
 
-    static getInstance(): Server{
+    static getInstance(){
         if(!this.instance){
-            this.instance = new Server()
+            this.instance = new this()
             this.instance.init()
         }
         return this.instance
