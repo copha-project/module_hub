@@ -11,7 +11,7 @@ declare interface ServerConfig {
 }
 
 export default class Server extends Base {
-    private app: any
+    private app: Koa
     constructor(){
         super()
         this.log.debug('init Server')

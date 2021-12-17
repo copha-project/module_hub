@@ -21,6 +21,9 @@ export default class Base {
     }
 
     get serverConfig(){
+        if(process.env.PORT){
+            this._serverConfig.port = process.env.PORT
+        }
         return this._serverConfig
     }
 
