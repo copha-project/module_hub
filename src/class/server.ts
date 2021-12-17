@@ -11,27 +11,18 @@ declare interface ServerConfig {
 }
 
 export default class Server extends Base {
-    static instance: Server
     private app: any
-
-    static getInstance(){
-        if(!this.instance){
-            this.instance = new this()
-            this.instance.init()
-        }
-        return this.instance
-    }
-
-    init(){
+    constructor(){
+        super()
         this.log.debug('init Server')
         this.app = new Koa()
         this.app
         .use(Compose([errHandler,reqLog]))
-        
         moduleInit(this.app)
-        
     }
+
     launch() {
         this.app.listen(this.serverConfig.port)
+        console.log(`The API server is running at : ${this.serverConfig.host}:${this.serverConfig.port}`)
     }
 }

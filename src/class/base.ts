@@ -8,6 +8,14 @@ export default class Base {
 
     static log = new Logger()
 
+    static instance: Base
+    static getInstance(){
+        if(!this.instance){
+            this.instance = new this()
+        }
+        return this.instance
+    }
+    
     get publicPath(){
         return path.join(__dirname,'../public')
     }
