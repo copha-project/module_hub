@@ -22,6 +22,7 @@
     "typescript": "^4.5.4"
   },
   "dependencies": {
+    "joi": "^17.5.0",
     "koa": "^2.13.4",
     "koa-bodyparser": "^4.3.0",
     "koa-compose": "^4.1.0",
