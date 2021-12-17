@@ -1,7 +1,7 @@
 import Base from "./base"
 import Koa from 'koa'
 import Compose from 'koa-compose'
-import { reqLog, errHandler } from '../server/middlewares'
+import { reqLog, errorHandler } from '../server/middlewares'
 
 import {init as moduleInit} from '../server/modules'
 
@@ -17,7 +17,7 @@ export default class Server extends Base {
         this.log.debug('init Server')
         this.app = new Koa()
         this.app
-        .use(Compose([errHandler,reqLog]))
+        .use(Compose([errorHandler,reqLog]))
         moduleInit(this.app)
     }
 

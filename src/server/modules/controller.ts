@@ -24,7 +24,7 @@ export class ModuleController extends Controller {
   }
 
   public async create(ctx: Context) {
-    const module: AddModule = ctx.request.body  
+    const module: AddModule = ctx.request.body
     const newModule = await this.manager.create(module as Module)
     if(newModule){
         ctx.body = new ModuleModel(newModule)

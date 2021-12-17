@@ -2,6 +2,8 @@ import Koa from 'koa'
 import bodyParser from 'koa-bodyparser'
 import Router from 'koa-router'
 import { ModuleController } from './controller'
+import { validate } from '../middlewares'
+import { createModule, updateModule } from './validators'
 
 export function init(server: Koa) {
   const router = new Router({ prefix: '/api/v1/modules' })
@@ -20,6 +22,7 @@ export function init(server: Koa) {
   router.post(
     '/',
     bodyParser(),
+    validate(createModule),
     controller.create.bind(controller)
   )
 
