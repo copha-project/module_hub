@@ -11,5 +11,10 @@ export function loadHome(server: Koa) {
     controller.home.bind(controller)
   )
 
+  router.get(
+    '/status',
+    controller.status.bind(controller)
+  )
+
   server.use(router.routes())
 }
