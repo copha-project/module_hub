@@ -3,7 +3,8 @@ import Koa from 'koa'
 import Compose from 'koa-compose'
 import { reqLog, errorHandler } from '../server/middlewares'
 
-import {init as moduleInit} from '../server/modules'
+import {init as loadModules} from '../server/modules'
+import { loadHome } from '../server/home'
 
 declare interface ServerConfig {
     host: string
@@ -18,7 +19,9 @@ export default class Server extends Base {
         this.app = new Koa()
         this.app
         .use(Compose([errorHandler,reqLog]))
-        moduleInit(this.app)
+
+        loadHome(this.app)
+        loadModules(this.app)
     }
 
     launch() {
