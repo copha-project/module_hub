@@ -8,6 +8,11 @@ import { loadHome } from '../server/home'
 import { ModuleManager } from "../server/modules/manager"
 export default class Server extends Base {
     private app: Koa
+    
+    static getInstance(){
+        return super.getInstance() as Server
+    }
+
     constructor(){
         super()
         this.log.debug('init Server')

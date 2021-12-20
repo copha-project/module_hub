@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "node ./dist/index.js",
+    "start-pms": "cross-env SERVE_PACKAGE=1 node ./dist/index.js",
     "build": "gulp",
     "dev": "cross-env PORT=3456 nodemon -w src --verbose --exec ./node_modules/.bin/ts-node --files ./src/index.ts",
     "test": "echo \"Error: no test specified\" && exit 1"
