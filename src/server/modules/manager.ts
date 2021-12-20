@@ -65,9 +65,13 @@ class RemoteRepository extends Base implements Repository {
 
     async init(){
         const url = "https://api.github.com/repos/copha-project/module/contents/modules.json"
-        const modulesData = await Utils.download(url,{})
-        const jsonData = JSON.parse(Buffer.from(JSON.parse(modulesData).content,'base64').toString('utf-8'))
-        this.db = jsonData
+        try {
+            const modulesData = await Utils.download(url,{})
+            const jsonData = JSON.parse(Buffer.from(JSON.parse(modulesData).content,'base64').toString('utf-8'))
+            this.db = jsonData
+        } catch (error:any) {
+            this.log.err(`get db error: ${error.message}`)
+        }
     }
 
     findByName(name: string): Promise<Module | undefined> {
