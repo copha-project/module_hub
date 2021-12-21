@@ -7,28 +7,28 @@ import { createModule, updateModule } from './validators'
 
 export function init(server: Koa) {
   const router = new Router({ prefix: '/api/v1/modules' })
-  const controller = ModuleController.getInstance() as ModuleController
+  const controller = ModuleController.getInstance<ModuleController>()
 
   router.get(
     '/:id',
-    controller.get.bind(controller)
+    controller.getMethod('get')
   )
   
   router.get(
     '/',
-    controller.getAll.bind(controller)
+    controller.getMethod('getAll')
   )
 
   router.post(
     '/',
     bodyParser(),
     validate(createModule),
-    controller.create.bind(controller)
+    controller.getMethod('create')
   )
 
   router.delete(
     '/:id',
-    controller.delete.bind(controller)
+    controller.getMethod('delete')
   )
 
   server.use(router.routes())

@@ -8,10 +8,6 @@ import { loadHome } from '../server/home'
 import { ModuleManager } from "../server/modules/manager"
 export default class Server extends Base {
     private app: Koa
-    
-    static getInstance(){
-        return super.getInstance() as Server
-    }
 
     constructor(){
         super()
@@ -26,7 +22,7 @@ export default class Server extends Base {
 
     async init(){
         this.log.info("load Modules data")
-        await ModuleManager.loadModulesData()
+        await ModuleManager.getInstance<ModuleManager>().loadModulesData()
     }
     
     async launch() {

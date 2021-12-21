@@ -4,7 +4,7 @@ import { ModuleManager } from './manager'
 import Controller from '../../class/controller'
 
 export class ModuleController extends Controller {
-  private manager = ModuleManager.getInstance() as ModuleManager
+  private manager = ModuleManager.getInstance<ModuleManager>()
 
   public async getAll(ctx: Context) {
     const modules = await this.manager.all()

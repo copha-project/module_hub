@@ -9,11 +9,11 @@ export default class Base {
     static log = new Logger()
 
     static instance: Base
-    static getInstance(){
+    static getInstance<T extends Base>(){
         if(!this.instance){
             this.instance = new this()
         }
-        return this.instance
+        return this.instance as T
     }
     
     get publicPath(){

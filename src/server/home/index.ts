@@ -4,16 +4,16 @@ import { HomeController } from './controller'
 
 export function loadHome(server: Koa) {
   const router = new Router({ prefix: '' })
-  const controller = HomeController.getInstance() as HomeController
+  const controller = HomeController.getInstance<HomeController>()
 
   router.get(
     '/',
-    controller.home.bind(controller)
+    controller.getMethod('home')
   )
 
   router.get(
     '/status',
-    controller.status.bind(controller)
+    controller.getMethod('status')
   )
 
   server.use(router.routes())

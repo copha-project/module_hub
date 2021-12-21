@@ -15,14 +15,6 @@ interface Repository {
 
 export class LocalRepository extends Base implements Repository {
     private db: Module[] = []
-    static instance: LocalRepository
-    static getInstance() {
-        if (!this.instance) {
-            this.instance = new LocalRepository
-            this.instance.init()
-        }
-        return this.instance
-    }
 
     init(filePath?: string) {
         this.db = readJsonSync(filePath || this.dbFilePath)
@@ -59,10 +51,7 @@ export class LocalRepository extends Base implements Repository {
 
 class RemoteRepository extends Base implements Repository {
     private db: Module[] = []
-    static getInstance(){
-        return super.getInstance() as RemoteRepository
-    }
-
+  
     async init(){
         const url = "https://api.github.com/repos/copha-project/module/contents/modules.json"
         try {
@@ -89,15 +78,11 @@ class RemoteRepository extends Base implements Repository {
 }
 
 export class ModuleManager extends Manager {
-    private repo: Repository = LocalRepository.getInstance()
+    private repo: Repository = LocalRepository.getInstance<LocalRepository>()
 
-    static getInstance(){
-        return super.getInstance() as ModuleManager
-    }
-
-    static async loadModulesData(){
-        this.getInstance().repo = RemoteRepository.getInstance()
-        return this.getInstance().repo.init()
+    async loadModulesData(){
+        this.repo = RemoteRepository.getInstance<RemoteRepository>()
+        return this.repo.init()
     }
 
     public async findByName(name: string): Promise<Module | undefined> {

@@ -1,2 +1,2 @@
 import server from './class/server'
-server.getInstance().launch()
+server.getInstance<server>().launch()
