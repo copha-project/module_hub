@@ -22,8 +22,5 @@ jobs:
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v2
-
-      # Runs a set of commands using the runners shell
-      - name: build code
       - run: yarn
       - run: yarn run build
