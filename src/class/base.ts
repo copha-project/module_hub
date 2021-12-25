@@ -27,6 +27,10 @@ export default class Base {
         return this._serverConfig
     }
 
+    get deployKey(){
+        return process.env.DEPLOY_KEY || "1122345"
+    }
+
     get dbConfig(){
         return this._dbConfig
     }

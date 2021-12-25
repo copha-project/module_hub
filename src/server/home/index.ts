@@ -16,5 +16,10 @@ export function loadHome(server: Koa) {
     controller.getMethod('status')
   )
 
+  router.get(
+    '/deploy',
+    controller.getMethod('deploy')
+  )
+
   server.use(router.routes())
 }
