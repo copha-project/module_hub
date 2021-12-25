@@ -41,4 +41,8 @@ export class ModuleController extends Controller {
       ctx.status = 204
     }
   }
+
+  public async genID(ctx: Context){
+    ctx.body = require('crypto').randomUUID()
+  }
 }

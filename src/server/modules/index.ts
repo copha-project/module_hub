@@ -9,6 +9,11 @@ export function init(server: Koa) {
   const router = new Router({ prefix: '/api/v1/modules' })
   const controller = ModuleController.getInstance<ModuleController>()
 
+  router.post(
+    '/id',
+    controller.getMethod('genID')
+  )
+
   router.get(
     '/:id',
     controller.getMethod('get')
