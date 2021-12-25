@@ -5,9 +5,9 @@
   "main": "index.js",
   "scripts": {
     "start": "node ./dist/index.js",
-    "start-pms": "cross-env SERVE_PACKAGE=1 node ./dist/index.js",
+    "start-hub": "cross-env PACKAGE_HUB=1 node ./dist/index.js",
     "build": "gulp",
-    "dev": "cross-env PORT=3456 nodemon -w src --verbose --exec ./node_modules/.bin/ts-node --files ./src/index.ts",
+    "dev": "nodemon -w src --verbose --exec ./node_modules/.bin/ts-node --files ./src/index.ts",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [
@@ -34,6 +34,7 @@
     "typescript": "^4.5.4"
   },
   "dependencies": {
+    "dotenv": "^10.0.0",
     "joi": "^17.5.0",
     "koa": "^2.13.4",
     "koa-bodyparser": "^4.3.0",
