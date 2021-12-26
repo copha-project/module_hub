@@ -17,12 +17,16 @@ export default class Server extends Base {
         .use(Compose([errorHandler,reqLog]))
 
         loadHome(this.app)
-        loadModules(this.app)
     }
 
     async init(){
-        this.log.info("load Modules data")
-        await ModuleManager.getInstance<ModuleManager>().loadModulesData()
+        if(!this.isPackageHub){
+            this.log.info('load modules list data')
+            await ModuleManager.getInstance<ModuleManager>().loadModulesData()
+            loadModules(this.app)
+        }else{
+            
+        }
     }
     
     async launch() {

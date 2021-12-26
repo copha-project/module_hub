@@ -16,6 +16,10 @@ export default class Base {
         return this.instance as T
     }
     
+    get isPackageHub(){
+        return process.env['PACKAGE_HUB'] !== ''
+    }
+
     get publicPath(){
         return path.join(__dirname,'../public')
     }
