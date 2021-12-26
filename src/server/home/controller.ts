@@ -22,13 +22,17 @@ export class HomeController extends Controller {
   }
 
   public async deploy(ctx: Context) {
-    if(ctx.query.key != this.deployKey) {
+    if(ctx.request.body.key !== this.deployKey) {
       ctx.status = 403
       return
     }
     try {
-      const {stdout,stderr} = await execPromise('git pull')
-      ctx.body = stdout
+      const deployFile = path.join(this.appRootPath,'deploy.sh')
+      const {stdout,stderr} = await execPromise(deployFile,{
+        windowsHide : true
+      })
+
+      ctx.body = stdout + "\n" +stderr
     } catch (error) {
       ctx.body = (error as Error).message
     }

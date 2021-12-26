@@ -1,4 +1,5 @@
 import Koa from 'koa'
+import bodyParser from 'koa-bodyparser'
 import Router from 'koa-router'
 import { HomeController } from './controller'
 
@@ -16,8 +17,9 @@ export function loadHome(server: Koa) {
     controller.getMethod('status')
   )
 
-  router.get(
+  router.post(
     '/deploy',
+    bodyParser(),
     controller.getMethod('deploy')
   )
 

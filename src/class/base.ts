@@ -27,6 +27,10 @@ export default class Base {
         return this._serverConfig
     }
 
+    get appRootPath(){
+        return path.join(__dirname,'../../')
+    }
+
     get deployKey(){
         return process.env.DEPLOY_KEY || "1122345"
     }
