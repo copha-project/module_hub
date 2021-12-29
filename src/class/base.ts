@@ -1,10 +1,11 @@
 import path from 'path'
-import { ServerConfig, DBConfig } from '../config'
+import { ServerConfig, DBConfig, AppConfig } from '../config'
 import Logger from './logger'
 
 export default class Base {
     private _serverConfig = ServerConfig
     private _dbConfig = DBConfig
+    private _appConfig = AppConfig
 
     static log = new Logger()
 
@@ -41,6 +42,16 @@ export default class Base {
 
     get dbConfig(){
         return this._dbConfig
+    }
+
+    get appConfig(){
+        if(process.env.APP_KEY){
+            this._appConfig.AppKey = process.env.APP_KEY
+        }
+        if(process.env.APP_SECRET){
+            this._appConfig.AppSecret = process.env.APP_SECRET
+        }
+        return this._appConfig
     }
 
     get log(){
