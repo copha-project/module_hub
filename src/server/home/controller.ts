@@ -17,6 +17,7 @@ export class HomeController extends Controller {
     ctx.body = {
       name: "copha modules hub service",
       version: (await Utils.readJson(path.join(__dirname,'../../../package.json'))).version,
+      isPackageHub: this.isPackageHub,
       ... getEnvInfo()
     }
   }

@@ -17,7 +17,7 @@ export default class Base {
     }
     
     get isPackageHub(){
-        return process.env['PACKAGE_HUB'] !== ''
+        return process.env['PACKAGE_HUB'] !== undefined
     }
 
     get publicPath(){
