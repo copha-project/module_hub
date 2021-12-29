@@ -1,22 +1,21 @@
 import { Context } from 'koa'
 import { AddModule, ModuleModel, Module } from './model'
-import { ModuleManager } from './manager'
+import { getManager } from './manager'
 import Controller from '../../class/controller'
 
 export class ModuleController extends Controller {
-  private manager = ModuleManager.getInstance<ModuleManager>()
+  private manager = getManager()
 
   public async getAll(ctx: Context) {
     const modules = await this.manager.all()
-
     ctx.body = modules.map((t: Module) => new ModuleModel(t))
     ctx.status = 200
   }
 
   public async get(ctx: Context) {
-    const module = await this.manager.findByName(ctx.params.name)
+    const module = await this.manager.findFullModuleByName(ctx.params.name)
     if(module){
-        ctx.body = new ModuleModel(module)
+        ctx.body = module
         ctx.status = 200
     }else{
         ctx.status = 404

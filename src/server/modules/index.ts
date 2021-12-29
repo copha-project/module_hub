@@ -2,7 +2,7 @@ import Koa from 'koa'
 import bodyParser from 'koa-bodyparser'
 import Router from 'koa-router'
 import { ModuleController } from './controller'
-import { validate } from '../middlewares'
+import { validate, authorization } from '../middlewares'
 import { createModule, updateModule } from './validators'
 
 export function init(server: Koa) {
@@ -15,7 +15,7 @@ export function init(server: Koa) {
   )
 
   router.get(
-    '/:id',
+    '/:name',
     controller.getMethod('get')
   )
   
@@ -26,6 +26,7 @@ export function init(server: Koa) {
 
   router.post(
     '/',
+    authorization(),
     bodyParser(),
     validate(createModule),
     controller.getMethod('create')

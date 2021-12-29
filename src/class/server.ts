@@ -5,7 +5,7 @@ import { reqLog, errorHandler } from '../server/middlewares'
 
 import {init as loadModules} from '../server/modules'
 import { loadHome } from '../server/home'
-import { ModuleManager } from "../server/modules/manager"
+import { getManager } from "../server/modules/manager"
 export default class Server extends Base {
     private app: Koa
 
@@ -22,7 +22,7 @@ export default class Server extends Base {
     async init(){
         if(!this.isPackageHub){
             this.log.info('load modules list data')
-            await ModuleManager.getInstance<ModuleManager>().loadModulesData()
+            await getManager().loadModulesData()
             loadModules(this.app)
         }else{
             

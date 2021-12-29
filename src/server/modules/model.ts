@@ -10,28 +10,39 @@ declare const enum ModuleType {
 }
 
 export interface Module {
-    id: string;
-    name: string;
-    desc: string;
-    type: ModuleType;
-    repository?: string;
-    version: string;
+    id: string
+    name: string
+    desc: string
+    type: ModuleType
+    repository: string
+    version: string
 }
 
+interface packageItem {
+    version: string
+    link: string
+    md5: string
+    sha256: string
+}
 export class ModuleModel {
     public id: string
     public name: string
     public desc: string
     public type: string
     public repository: string
-    public version: string
+    public packages?: packageItem[]
 
     constructor(module: Module) {
         this.id = module.id
         this.name = module.name
         this.desc = module.desc
         this.type = module.type
-        this.repository = module.repository!
-        this.version = module.version
+        this.repository = module.repository
+    }
+
+    static buildFullInfo(module: Module){
+        const m = new this(module)
+        m.packages = []
+        return m
     }
 }

@@ -16,6 +16,7 @@ export class HomeController extends Controller {
   public async status(ctx: Context) {
     ctx.body = {
       name: "copha modules hub service",
+      appKey: this.appConfig.AppKey,
       version: (await Utils.readJson(path.join(__dirname,'../../../package.json'))).version,
       isPackageHub: this.isPackageHub,
       ... getEnvInfo()
