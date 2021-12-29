@@ -15,7 +15,7 @@ export interface Module {
     desc: string
     type: ModuleType
     repository: string
-    version: string
+    packages?: packageItem[]
 }
 
 interface packageItem {
@@ -38,6 +38,7 @@ export class ModuleModel {
         this.desc = module.desc
         this.type = module.type
         this.repository = module.repository
+        this.packages = module.packages
     }
 
     static buildFullInfo(module: Module){

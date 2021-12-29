@@ -22,6 +22,18 @@ export class ModuleController extends Controller {
     }
   }
 
+  public async update(ctx: Context) {
+    const module = await this.manager.findByName(ctx.params.name)
+    try {
+      await this.manager.update(module!)
+      ctx.status = 200
+    } catch (error) {
+      console.log(error);
+      
+      ctx.status = 500
+    }
+  }
+
   public async create(ctx: Context) {
     const module: AddModule = ctx.request.body
     const newModule = await this.manager.create(module as Module)

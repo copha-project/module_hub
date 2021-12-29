@@ -5,6 +5,7 @@ import path from 'path'
 import { getEnvInfo } from '../../common'
 import { exec } from 'child_process'
 import { promisify } from 'util'
+import { getRemoteRepository } from '../modules/repository'
 const execPromise = promisify(exec)
 
 export class HomeController extends Controller {
@@ -19,6 +20,7 @@ export class HomeController extends Controller {
       appKey: this.appConfig.AppKey,
       version: (await Utils.readJson(path.join(__dirname,'../../../package.json'))).version,
       isPackageHub: this.isPackageHub,
+      sha: getRemoteRepository().hash,
       ... getEnvInfo()
     }
   }

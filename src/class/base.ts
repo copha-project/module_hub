@@ -51,6 +51,9 @@ export default class Base {
         if(process.env.APP_SECRET){
             this._appConfig.AppSecret = process.env.APP_SECRET
         }
+        if(process.env.GITHUB_TOKEN){
+            this._appConfig.GithubToken = process.env.GITHUB_TOKEN
+        }
         return this._appConfig
     }
 

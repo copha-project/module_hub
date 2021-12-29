@@ -1,4 +1,5 @@
 {
     "AppKey": "",
-    "AppSecret": ""
+    "AppSecret": "",
+    "GithubToken": ""
 }

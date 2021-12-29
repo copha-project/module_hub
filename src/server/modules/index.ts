@@ -32,6 +32,11 @@ export function init(server: Koa) {
     controller.getMethod('create')
   )
 
+  router.put(
+    '/:name',
+    controller.getMethod('update')
+  )
+
   router.delete(
     '/:id',
     controller.getMethod('delete')
