@@ -20,4 +20,8 @@ declare namespace uniUtils {
     function createDir(dirPath:string|string[]): Promise<any>
     function copyFile(srcFile:string,distFile:string): Promise<any>
     function arrayRemove(arr:any[], item:any): any[]
+    function atob(s:string): string
+    namespace hash {
+        function sha1(s:string): string
+    }
 }

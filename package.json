@@ -42,7 +42,7 @@
     "koa-bodyparser": "^4.3.0",
     "koa-compose": "^4.1.0",
     "koa-router": "^10.1.1",
-    "uni-utils": "^1.0.15",
+    "uni-utils": "^1.0.18",
     "winston": "^3.3.3"
   }
 }
