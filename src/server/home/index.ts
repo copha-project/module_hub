@@ -23,5 +23,10 @@ export function loadHome(server: Koa) {
     controller.getMethod('deploy')
   )
 
+  router.get(
+    '/token/:name',
+    controller.getMethod('genToken')
+  )
+
   server.use(router.routes())
 }

@@ -14,13 +14,13 @@ export class HomeController extends Controller {
     ctx.body = "ok<br/><a href='/status'>look status</a>"
   }
 
-  public async status(ctx: Context) {
+  public async status(ctx: Context) {    
     ctx.body = {
       name: "copha modules hub service",
       appKey: this.appConfig.AppKey,
       version: (await Utils.readJson(path.join(__dirname,'../../../package.json'))).version,
       isPackageHub: this.isPackageHub,
-      sha: getRemoteRepository().hash,
+      lastCommitHash: (await getRemoteRepository().getLastCommit()).sha,
       ... getEnvInfo()
     }
   }
@@ -41,5 +41,10 @@ export class HomeController extends Controller {
       ctx.body = (error as Error).message
     }
     ctx.status = 200
+  }
+
+  public async genToken(ctx: Context){
+    const salt = require('crypto').randomBytes(6).toString('hex')
+    ctx.body = `${salt}:${Utils.hash.sha1(this.appConfig.AppSecret+Utils.atob(ctx.params.name)+salt)}`
   }
 }

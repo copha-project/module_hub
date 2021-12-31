@@ -1,4 +1,4 @@
-import { Module, ModuleModel } from "./model"
+import { Module, ModuleModel, AddPackage, UpdateModule } from "./model"
 import Manager from "../../class/manager"
 import { getRepository } from "./repository"
 export class ModuleManager extends Manager {
@@ -10,25 +10,17 @@ export class ModuleManager extends Manager {
         return this.repo.init()
     }
 
-    public async findFullModuleByName(name: string){
-        const module = await this.findByName(name)
-        if(!module){
-            throw new Error('not found')
-        }else{
-            return ModuleModel.buildFullInfo(module)
-        }
-    }
-
-    public async findByName(name: string): Promise<Module | undefined> {
+    public async findByName(name: string): Promise<Module> {
         return this.repo.findByName(name)
     }
 
-    public async create(module: Module): Promise<Module | void> {
+    public async create(module: Module): Promise<Module> {
         return this.repo.add(module)
     }
 
-    public async update(module: Module): Promise<Module | void> {
-        return this.repo.update(module)
+    public async update(name: string, module: UpdateModule): Promise<Module | void> {
+        module.packages = []
+        return this.repo.update!(name, module)
     }
 
     public async delete(id: string): Promise<boolean> {
@@ -37,6 +29,12 @@ export class ModuleManager extends Manager {
 
     public async all() {
         return this.repo.all()
+    }
+
+    public async addPackage(module: Module, modulePackage: AddPackage){
+        const updateModule: UpdateModule = {}
+        updateModule.packages = module.packages?.concat(modulePackage)
+        return this.repo.update!(module.name, updateModule)
     }
 }
 

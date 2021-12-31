@@ -19,8 +19,8 @@ export default class LocalRepository extends Repository implements Repository {
         return module
     }
 
-    async update(module: Module): Promise<void> {
-
+    async update(name: string,module: Module): Promise<void> {
+        throw new Error("not work")
     }
 
     async delete(id: string): Promise<boolean> {

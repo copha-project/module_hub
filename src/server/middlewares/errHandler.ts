@@ -17,7 +17,7 @@ export async function errorHandler(ctx: Context, next: Callback){
   try {
     await next()
   } catch (err) {
-    Base.log.err(`Error Handler: ${err}`)
+    Base.log.err(`Error Handler: ${err}, ${err instanceof AppError}`)
     if (err instanceof AppError) {
       ctx.body = err.toModel()
       ctx.status = httpCodes[err.code] ? httpCodes[err.code] : 500

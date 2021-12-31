@@ -1,5 +1,18 @@
 export interface AddModule {
+    id?: string
     name: string
+    desc: string
+    type: string
+    repository: string
+    packages: packageItem[]
+}
+
+export interface AddPackage extends packageItem {}
+
+export interface UpdateModule {
+    desc?: string
+    repository?: string
+    packages?: packageItem[]
 }
 
 declare const enum ModuleType {
@@ -38,12 +51,5 @@ export class ModuleModel {
         this.desc = module.desc
         this.type = module.type
         this.repository = module.repository
-        this.packages = module.packages
-    }
-
-    static buildFullInfo(module: Module){
-        const m = new this(module)
-        m.packages = []
-        return m
     }
 }
