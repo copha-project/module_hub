@@ -50,4 +50,12 @@ export class HomeController extends Controller {
       token: `${moduleIdHex}:${Utils.hash.sha1(this.appConfig.AppKey+moduleIdHex+this.appConfig.AppSecret)}`
     }
   }
+  
+  public async revealToken(ctx: Context){
+    const id = Buffer.from(ctx.request.body.id).toString('hex')
+    ctx.body = {
+      moduleId: ctx.request.body.id,
+      token: `${id}:${Utils.hash.sha1(this.appConfig.AppKey+id+this.appConfig.AppSecret)}`
+    }
+  }
 }
