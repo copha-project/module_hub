@@ -41,6 +41,9 @@ export default class Base {
     }
 
     get dbConfig(){
+        if(process.env.APP_DB_SOURCE){
+            this._dbConfig.RepositorySource = process.env.APP_DB_SOURCE
+        }
         return this._dbConfig
     }
 
