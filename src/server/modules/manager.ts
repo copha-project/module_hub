@@ -3,7 +3,7 @@ import Manager from "../../class/manager"
 import { getRepository } from "./repository"
 import { NotFoundError } from "../../class/error"
 export class ModuleManager extends Manager {
-    private repo!: Repository
+    private repo!: IRepository
 
     async loadModulesData(){
         this.log.info(`Load Modules data from : ${this.dbConfig.RepositorySource}`)
@@ -20,7 +20,17 @@ export class ModuleManager extends Manager {
     }
 
     public async create(module: Module): Promise<Module> {
-        return this.repo.add(module)
+        try {
+            await this.repo.findByName!(module.name)
+            throw Error("the module name is existed!")
+        } catch (error) {
+            if(error instanceof NotFoundError){
+                await this.repo.add(module)
+                return module
+            }else{
+                throw error
+            }
+        }
     }
 
     public async update(name: string, module: UpdateModule): Promise<Module | void> {
