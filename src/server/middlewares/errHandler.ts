@@ -22,7 +22,7 @@ export async function errorHandler(ctx: Context, next: Callback){
       ctx.body = err.toModel()
       ctx.status = httpCodes[err.code] ? httpCodes[err.code] : 500
     } else {
-      ctx.body = new AppError(10000, 'Internal Error Server')
+      ctx.body = new AppError(10000, (err as Error)?.message || 'Internal Error Server').toModel()
       ctx.status = 500
     }
   }
