@@ -2,6 +2,7 @@ import Koa from 'koa'
 import bodyParser from 'koa-bodyparser'
 import Router from 'koa-router'
 import { HomeController } from './controller'
+import { adminAuthorization } from '../middlewares'
 
 export function loadHome(server: Koa) {
   const router = new Router({ prefix: '' })
@@ -24,7 +25,8 @@ export function loadHome(server: Koa) {
   )
 
   router.get(
-    '/token/:name',
+    '/token',
+    adminAuthorization(),
     controller.getMethod('genToken')
   )
 

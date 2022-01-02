@@ -44,7 +44,10 @@ export class HomeController extends Controller {
   }
 
   public async genToken(ctx: Context){
-    const salt = require('crypto').randomBytes(6).toString('hex')
-    ctx.body = `${salt}:${Utils.hash.sha1(this.appConfig.AppSecret+Utils.atob(ctx.params.name)+salt)}`
+    const moduleIdHex = Buffer.from(require('crypto').randomUUID()).toString('hex')
+    ctx.body = {
+      moduleId: Buffer.from(moduleIdHex,'hex').toString(),
+      token: `${moduleIdHex}:${Utils.hash.sha1(this.appConfig.AppKey+moduleIdHex+this.appConfig.AppSecret)}`
+    }
   }
 }

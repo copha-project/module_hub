@@ -13,6 +13,7 @@ export default class Server extends Base {
         super()
         this.log.debug('init Server')
         this.app = new Koa()
+        this.app.context.appConfig = this.appConfig
         this.app
         .use(Compose([errorHandler,reqLog]))
 
