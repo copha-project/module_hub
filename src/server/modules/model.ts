@@ -10,6 +10,7 @@ export interface AddModule {
 export interface AddPackage extends packageItem {}
 
 export interface UpdateModule {
+    id?:string
     desc?: string
     repository?: string
     packages?: packageItem[]

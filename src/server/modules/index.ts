@@ -2,8 +2,8 @@ import Koa from 'koa'
 import bodyParser from 'koa-bodyparser'
 import Router from 'koa-router'
 import { ModuleController } from './controller'
-import { validate, authorization } from '../middlewares'
-import { createModule, createModulePackage, updateModule } from './validators'
+import { validate, moduleAuthorization, adminAuthorization } from '../middlewares'
+import { createModule, createModulePackage, updateId, updateModule } from './validators'
 
 export function init(app: Koa) {
   const router = new Router({ prefix: '/api/v1/modules' })
@@ -14,6 +14,14 @@ export function init(app: Koa) {
     controller.getMethod('get')
   )
   
+  router.put(
+    '/:name/id',
+    adminAuthorization(),
+    bodyParser(),
+    validate(updateId),
+    controller.getMethod('resetId')
+  )
+
   router.get(
     '/',
     controller.getMethod('getAll')
@@ -21,7 +29,7 @@ export function init(app: Koa) {
 
   router.post(
     '/',
-    authorization(),
+    moduleAuthorization(),
     bodyParser(),
     validate(createModule),
     controller.getMethod('create')
@@ -29,7 +37,7 @@ export function init(app: Koa) {
 
   router.put(
     '/:name',
-    authorization(),
+    moduleAuthorization(),
     bodyParser(),
     validate(updateModule),
     controller.getMethod('update')
@@ -44,9 +52,10 @@ export function init(app: Koa) {
     "/:name/packages",
     controller.getMethod("getAllPackage")
   )
+  
   router.post(
     "/:name/packages",
-    authorization(),
+    moduleAuthorization(),
     bodyParser(),
     validate(createModulePackage),
     controller.getMethod("addPackage")

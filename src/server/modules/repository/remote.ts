@@ -24,6 +24,12 @@ export default class RemoteRepository extends Repository implements Repository {
         }
     }
 
+    async findById(id: string): Promise<Module> {
+        const module = this.db.find(e=>e.id === id)
+        if(!module) throw new NotFoundError("module not found")
+        return module
+    }
+
     async findByName(name: string): Promise<Module> {
         const module = this.db.find(e=>e.name === name)
         if(!module) throw new NotFoundError("module not found")
@@ -39,14 +45,15 @@ export default class RemoteRepository extends Repository implements Repository {
         return module
     }
 
-    async update(name: string, module: UpdateModule){
+    async update(name: string, updateModule: UpdateModule){
         const cloneDb: Module[] = Object.assign([],this.db)
-        const editModule = cloneDb.find(e=>e.name === name)!
+        const cloneModule = cloneDb.find(e=>e.name === name)!
     
-        if(module.desc) editModule.desc = module.desc
-        if(module.repository) editModule.repository = module.repository
+        if(updateModule.id) cloneModule.id = updateModule.id
+        if(updateModule.desc) cloneModule.desc = updateModule.desc
+        if(updateModule.repository) cloneModule.repository = updateModule.repository
 
-        editModule.packages = module.packages
+        if(updateModule.packages) cloneModule.packages = updateModule.packages
 
         const content = Buffer.from(JSON.stringify(cloneDb, undefined, 4)).toString('base64')
         await this.sync(content)

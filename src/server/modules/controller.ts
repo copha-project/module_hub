@@ -6,10 +6,14 @@ import { Module, ModuleModel, UpdateModule, AddModule, AddPackage } from './mode
 export class ModuleController extends Controller {
   private manager = getManager()
 
+  public async resetId(ctx: Context){
+    await this.manager.resetId(ctx.params.name, ctx.request.body.id)
+    ctx.status = 200
+  }
+
   public async getAll(ctx: Context) {
     const modules = await this.manager.all()
     ctx.body = modules.map((t: Module) => new ModuleModel(t))
-    ctx.status = 200
   }
 
   public async get(ctx: Context) {

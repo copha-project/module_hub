@@ -18,3 +18,7 @@ export const updateModule = Joi.object({
     desc: Joi.string().required(),
     repository: Joi.string().required()
 })
+
+export const updateId = Joi.object({
+    id: Joi.string().required()
+})

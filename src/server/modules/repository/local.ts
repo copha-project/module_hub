@@ -10,6 +10,10 @@ export default class LocalRepository extends Repository implements Repository {
         this.db = readJsonSync(filePath || this.dbFilePath)
     }
 
+    async findById(id: string): Promise<Module | undefined> {
+        return this.db.find(e => e.id === id)
+    }
+
     async findByName(name: string): Promise<Module | undefined> {
         return this.db.find(e => e.name === name)
     }
