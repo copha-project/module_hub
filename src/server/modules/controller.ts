@@ -36,11 +36,8 @@ export class ModuleController extends Controller {
   }
 
   public async delete(ctx: Context) {
-    if (await this.manager.delete(ctx.params.id)) {
-      ctx.status = 200
-    } else {
-      ctx.status = 204
-    }
+    await this.manager.delete(ctx.params.id)
+    ctx.status = 200
   }
 
   public async getAllPackage(ctx: Context){

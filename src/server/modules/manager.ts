@@ -27,8 +27,8 @@ export class ModuleManager extends Manager {
         return this.repo.update!(name, module)
     }
 
-    public async delete(id: string): Promise<boolean> {
-        return this.repo.delete(id)
+    public async delete(name: string): Promise<void> {
+        return this.repo.deleteByName!(name)
     }
 
     public async all() {

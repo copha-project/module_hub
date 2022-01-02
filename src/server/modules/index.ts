@@ -29,7 +29,7 @@ export function init(app: Koa) {
 
   router.post(
     '/',
-    moduleAuthorization(),
+    adminAuthorization(),
     bodyParser(),
     validate(createModule),
     controller.getMethod('create')
@@ -45,6 +45,7 @@ export function init(app: Koa) {
 
   router.delete(
     '/:id',
+    adminAuthorization(),
     controller.getMethod('delete')
   )
 

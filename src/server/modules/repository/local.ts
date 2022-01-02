@@ -27,11 +27,10 @@ export default class LocalRepository extends Repository implements Repository {
         throw new Error("not work")
     }
 
-    async delete(id: string): Promise<boolean> {
+    async delete(id: string): Promise<void> {
         const index = this.db.findIndex(e => e.id === id)
-        if (index === -1) return false
+        if (index === -1) return
         this.db.splice(index, 1)
-        return true
     }
 
     async all(): Promise<Module[]> {

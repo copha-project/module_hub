@@ -4,7 +4,7 @@ export interface AddModule {
     desc: string
     type: string
     repository: string
-    packages: packageItem[]
+    packages?: packageItem[]
 }
 
 export interface AddPackage extends packageItem {}
