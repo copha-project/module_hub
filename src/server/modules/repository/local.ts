@@ -20,4 +20,12 @@ export default class LocalRepository extends Repository{
     private get dbFilePath() {
         return path.join(this.publicPath, 'modules.json')
     }
+
+    protected content2b(data:unknown){
+        return JSON.stringify(data, undefined, 4)
+    }
+
+    protected content2o(data:string){
+        return JSON.parse(data)
+    }
 }
