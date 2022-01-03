@@ -46,11 +46,15 @@ export class ModuleModel {
     public repository: string
     public packages?: packageItem[]
 
-    constructor(module: Module) {
+    constructor(module: Module, fullInfo: boolean = false) {
         this.id = module.id
         this.name = module.name
         this.desc = module.desc
         this.type = module.type
         this.repository = module.repository
+        
+        if(fullInfo){
+            this.packages = module.packages
+        } 
     }
 }

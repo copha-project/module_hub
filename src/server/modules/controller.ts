@@ -1,6 +1,7 @@
 import { Context } from 'koa'
 import { getManager } from './manager'
 import Controller from '../../class/controller'
+import { PermissionError } from '../../class/error';
 import { Module, ModuleModel, UpdateModule, AddModule, AddPackage } from './model'
 
 export class ModuleController extends Controller {
@@ -17,13 +18,16 @@ export class ModuleController extends Controller {
   }
 
   public async get(ctx: Context) {
-    ctx.body = await this.manager.findByName(ctx.params.name)
+    ctx.body = new ModuleModel(await this.manager.findByName(ctx.params.name),true)
   }
 
   public async update(ctx: Context) {
     const module = await this.manager.findByName(ctx.params.name)
+    if(module.id !== ctx.state.moduleId) throw new PermissionError()
     const updateData: UpdateModule = ctx.request.body
-    return this.manager.update(module.name, updateData)
+    const updateModule = await this.manager.update(module.name, updateData)
+    ctx.body = new ModuleModel(updateModule)
+    ctx.status = 201
   }
 
   public async create(ctx: Context) {
@@ -37,7 +41,7 @@ export class ModuleController extends Controller {
 
   public async delete(ctx: Context) {
     await this.manager.delete(ctx.params.id)
-    ctx.status = 200
+    ctx.status = 204
   }
 
   public async getAllPackage(ctx: Context){
@@ -47,9 +51,18 @@ export class ModuleController extends Controller {
 
   public async addPackage(ctx: Context) {
     const module = await this.manager.findByName(ctx.params.name)
+    if(module.id !== ctx.state.moduleId) throw new PermissionError()
+
     const modulePackage: AddPackage = ctx.request.body
     const newPackage = await this.manager.addPackage(module, modulePackage)
     ctx.body = newPackage
     ctx.status = 201
+  }
+
+  public async deletePackage(ctx: Context) {
+    const module = await this.manager.findByName(ctx.params.name)
+    if(module.id !== ctx.state.moduleId) throw new PermissionError()
+    await this.manager.removePackageByVersion(module, ctx.params.ver)
+    ctx.status = 204
   }
 }

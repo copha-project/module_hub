@@ -1,10 +1,10 @@
 import Base from "./base"
 import { NotFoundError } from './error'
+import { Module } from '../server/modules/model'
 import Utils from 'uni-utils'
-
 export default class Repository extends Base {
     protected storageList = []
-    protected db!: any[]
+    protected db!: Module[]
 
     public async all(): Promise<unknown[]> {
         return this.db
@@ -22,15 +22,15 @@ export default class Repository extends Base {
         return module
     }
 
-    async add(module: any): Promise<void> {
-        const cloneDb: any[] = Object.assign([],this.db)
+    async add(module: Module): Promise<void> {
+        const cloneDb: Module[] = Object.assign([],this.db)
         cloneDb.push(module)
         await this.sync(this.content2b(cloneDb),`add module: ${module.name}`)
         this.db = cloneDb
     }
 
-    async update(name: string, updateModule: any){
-        const cloneDb: any[] = Object.assign([],this.db)
+    async update(name: string, updateModule: Module){
+        const cloneDb: Module[] = Object.assign([],this.db)
         const cloneModule = cloneDb.find(e=>e.name === name)!
     
         if(updateModule.id) cloneModule.id = updateModule.id
@@ -41,6 +41,7 @@ export default class Repository extends Base {
 
         await this.sync(this.content2b(cloneDb), `update module: ${name}`)
         this.db = cloneDb
+        return cloneModule
     }
 
     async delete(id: string): Promise<void> {
@@ -58,11 +59,20 @@ export default class Repository extends Base {
             this.log.info("no module found!")
             return
         }
-        const cloneDb: any[] = Object.assign([],this.db)
+        const cloneDb: Module[] = Object.assign([],this.db)
         const deletedItem = cloneDb.splice(index, 1)
         const msg = "remove module: " + deletedItem.map(e=>e.name).join(" ")
         await this.sync(this.content2b(cloneDb), msg)
         this.db.splice(index, 1)
+    }
+
+    async deletePackageByIndex(module:Module,index:number){
+        const cloneDb: Module[] = Object.assign([],this.db)
+        const useModule = cloneDb.find(e=>e.id === module.id)!
+        const deletedItem = useModule.packages!.splice(index, 1)
+        const msg = "remove module package : " + useModule.name + ':' + deletedItem.map(e=>e.version).join(" ")
+        await this.sync(this.content2b(cloneDb), msg)
+        this.db.find(e=>e.id === module.id)!.packages?.splice(index,1)
     }
 
     protected async sync(db:string, msg?:string){

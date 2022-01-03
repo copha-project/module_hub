@@ -23,6 +23,12 @@ export class NotFoundError extends AppError {
   }
 }
 
+export class DataRepeatError extends AppError {
+  constructor(message: string) {
+    super(20000, message)
+  }
+}
+
 export class ValidationError extends AppError {
   constructor(message: string, error?: Error) {
     super(30000, message, error)

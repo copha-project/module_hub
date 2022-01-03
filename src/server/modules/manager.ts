@@ -1,7 +1,7 @@
 import { Module, ModuleModel, AddPackage, UpdateModule } from "./model"
 import Manager from "../../class/manager"
 import { getRepository } from "./repository"
-import { NotFoundError } from "../../class/error"
+import { NotFoundError, DataRepeatError } from "../../class/error"
 export class ModuleManager extends Manager {
     private repo!: IRepository
 
@@ -33,7 +33,7 @@ export class ModuleManager extends Manager {
         }
     }
 
-    public async update(name: string, module: UpdateModule): Promise<Module | void> {
+    public async update(name: string, module: UpdateModule): Promise<Module> {
         return this.repo.update!(name, module)
     }
 
@@ -46,9 +46,17 @@ export class ModuleManager extends Manager {
     }
 
     public async addPackage(module: Module, modulePackage: AddPackage){
+        if(module.packages?.findIndex(e=>e.version === modulePackage.version) !== -1) throw new DataRepeatError("add package existed")
         const updateModule: UpdateModule = {}
         updateModule.packages = module.packages?.concat(modulePackage)
-        return this.repo.update!(module.name, updateModule)
+        await this.repo.update(module.name, updateModule)
+        return modulePackage
+    }
+
+    public async removePackageByVersion(module: Module, version:string){
+        const deleteIndex = module.packages!.findIndex(e=>e.version === version)
+        if(deleteIndex === -1) throw new NotFoundError("no package found")
+        await this.repo.deletePackageByIndex(module, deleteIndex)
     }
 
     public async resetId(name:string, id:string){

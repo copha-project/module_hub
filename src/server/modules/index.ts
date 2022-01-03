@@ -62,5 +62,11 @@ export function init(app: Koa) {
     controller.getMethod("addPackage")
   )
 
+  router.delete(
+    "/:name/packages/:ver",
+    moduleAuthorization(),
+    controller.getMethod("deletePackage")
+  )
+
   app.use(router.routes())
 }

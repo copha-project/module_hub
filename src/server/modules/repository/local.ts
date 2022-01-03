@@ -1,11 +1,20 @@
 import path from "path"
-import { readJsonSync } from 'uni-utils'
-import { Module } from "../model"
+import { readJsonSync, saveFile, readFile } from 'uni-utils'
 import Repository from "../../../class/repository"
 
 export default class LocalRepository extends Repository{
-    init(filePath?: string) {
-        this.db = readJsonSync(filePath || this.dbFilePath)
+    async init() {
+        await this.sync()
+    }
+
+    protected async sync(content?:string, commitMessage:string="update module data"){
+        this.log.info("sync: " + commitMessage)
+        if(content){
+            await saveFile(content,this.dbFilePath)
+        }else{
+            const modulesData = await readFile(this.dbFilePath)
+            this.db = this.content2o(modulesData)
+        }
     }
 
     private get dbFilePath() {

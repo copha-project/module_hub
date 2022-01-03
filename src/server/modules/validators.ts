@@ -10,13 +10,13 @@ export const createModule = Joi.object({
 export const createModulePackage = Joi.object({
     version: Joi.string().trim().required(),
     link: Joi.string().required(),
-    md5: Joi.string().required(),
-    sha256: Joi.string().required()
+    md5: Joi.string().length(32).required(),
+    sha256: Joi.string().length(64).required()
 })
 
 export const updateModule = Joi.object({
-    desc: Joi.string().required(),
-    repository: Joi.string().required()
+    desc: Joi.string(),
+    repository: Joi.string()
 })
 
 export const updateId = Joi.object({

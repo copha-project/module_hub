@@ -32,6 +32,7 @@ export default class RemoteRepository extends Repository{
                 sha: this.sha
             })
             if(resp.status === 200){
+                this.log.info("sync: " + commitMessage)
                 this.sha = resp.data.content?.sha!
             }
         }else{
