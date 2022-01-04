@@ -1,1 +1,10 @@
-[]
+[
+    {
+        "name": "puppeteer",
+        "type": "driver",
+        "desc": "driver base on puppeteer",
+        "repository": "https://google.com",
+        "id": "2e2025a0-6d08-49b2-94be-86dddff7bbb6",
+        "packages": []
+    }
+]

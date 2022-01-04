@@ -57,4 +57,12 @@ export class HomeController extends Controller {
       token: `${id}:${Utils.hash.sha1(this.appConfig.AppKey+id+this.appConfig.AppSecret)}`
     }
   }
+
+  //upload package
+  public async upload(ctx: Context){
+    ctx.body = {
+      msg: "package upload ok"
+    }
+    ctx.state = 201
+  }
 }
