@@ -1,8 +1,8 @@
 import Base from "./base"
 import Koa from 'koa'
+import cors from '@koa/cors'
 import Compose from 'koa-compose'
 import { reqLog, errorHandler } from '../server/middlewares'
-
 import {init as loadModules} from '../server/modules'
 import { loadHome } from '../server/home'
 import { getManager } from "../server/modules/manager"
@@ -16,17 +16,18 @@ export default class Server extends Base {
         this.app.context.appConfig = this.appConfig
         this.app
         .use(Compose([errorHandler,reqLog]))
+        .use(cors())
 
         loadHome(this.app)
     }
 
     async init(){
         if(!this.isPackageHub){
-            this.log.info('load modules list data')
+            this.log.info('Service mode: mata hub')
             await getManager().loadModulesData()
             loadModules(this.app)
         }else{
-            
+            this.log.info('Service mode: package hub')
         }
     }
     

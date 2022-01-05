@@ -1,10 +1,9 @@
 import Repository from "../../../class/repository"
-import { Module,UpdateModule } from "../model"
 import { Octokit } from "@octokit/core"
 export default class RemoteRepository extends Repository{
     private sha: string = ""
     private lastCommit: {sha:string} = {sha:""}
-    private githubAPI = new Octokit({auth: this.appConfig.GithubToken})
+    private githubAPI = new Octokit({auth: this.appConfig.key.GithubToken})
 
     private moduleMeta = {
         owner: "copha-project",

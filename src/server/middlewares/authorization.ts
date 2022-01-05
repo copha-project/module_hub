@@ -5,9 +5,10 @@ import Utils from 'uni-utils'
 
 export function moduleAuthorization(): IMiddleware {
   return async (ctx: Context, next: Callback) => {
-    if(!ctx.headers.authorization) throw new PermissionError()
-    const [moduleIdHex, token] = ctx.headers.authorization?.split(':')
-    if(!moduleIdHex || !token || Utils.hash.sha1(ctx.appConfig.AppKey + moduleIdHex + ctx.appConfig.AppSecret) !== token){
+    const tokenCode = ctx.headers.authorization || ctx.request.body.authorization
+    if(!tokenCode) throw new PermissionError()  
+    const [moduleIdHex, token] = tokenCode?.split(':')
+    if(!moduleIdHex || !token || Utils.hash.sha1(ctx.appConfig.key.AppKey + moduleIdHex + ctx.appConfig.key.AppSecret) !== token){
       throw new PermissionError()
     }
     ctx.state.moduleId = Buffer.from(moduleIdHex,'hex').toString()
@@ -17,7 +18,7 @@ export function moduleAuthorization(): IMiddleware {
 
 export function adminAuthorization(): IMiddleware {
   return async (ctx: Context, next: Callback) => {
-    if (ctx.headers.authorization !== ctx.appConfig.AppSecret) {
+    if (ctx.headers.authorization !== ctx.appConfig.key.AppSecret) {
       throw new PermissionError();
     }
     await next()
