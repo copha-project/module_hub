@@ -2,7 +2,7 @@ import { Context } from 'koa'
 import Controller from '../../class/controller'
 import Utils from 'uni-utils'
 import path from 'path'
-import { getEnvInfo } from '../../common'
+import { getEnvInfo, uploadFile } from '../../common'
 import { exec } from 'child_process'
 import { promisify } from 'util'
 import { getRemoteRepository } from '../modules/repository'
@@ -46,7 +46,7 @@ export class HomeController extends Controller {
     const moduleIdHex = Buffer.from(require('crypto').randomUUID()).toString('hex')
     ctx.body = {
       moduleId: Buffer.from(moduleIdHex,'hex').toString(),
-      token: `${moduleIdHex}:${Utils.hash.sha1(this.appConfig.AppKey+moduleIdHex+this.appConfig.AppSecret)}`
+      token: `${moduleIdHex}:${Utils.hash.sha1(this.keyConfig.AppKey+moduleIdHex+this.keyConfig.AppSecret)}`
     }
   }
   
@@ -54,12 +54,14 @@ export class HomeController extends Controller {
     const id = Buffer.from(ctx.request.body.id).toString('hex')
     ctx.body = {
       moduleId: ctx.request.body.id,
-      token: `${id}:${Utils.hash.sha1(this.appConfig.AppKey+id+this.appConfig.AppSecret)}`
+      token: `${id}:${Utils.hash.sha1(this.keyConfig.AppKey+id+this.keyConfig.AppSecret)}`
     }
   }
 
   //upload package
   public async upload(ctx: Context){
+    // console.log(ctx.req)
+    await uploadFile(ctx, this.packageStoragePath)
     ctx.body = {
       msg: "package upload ok"
     }

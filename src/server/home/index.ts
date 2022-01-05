@@ -2,7 +2,7 @@ import Koa from 'koa'
 import bodyParser from 'koa-bodyparser'
 import Router from 'koa-router'
 import { HomeController } from './controller'
-import { adminAuthorization, moduleAuthorization, validate, uploadMid } from '../middlewares'
+import { adminAuthorization, moduleAuthorization, validate } from '../middlewares'
 import { revealToken } from './validators'
 
 export function loadHome(server: Koa) {
@@ -33,8 +33,8 @@ export function loadHome(server: Koa) {
 
   router.put(
     '/token',
-    adminAuthorization(),
     bodyParser(),
+    adminAuthorization(),
     validate(revealToken),
     controller.getMethod('revealToken')
   )
@@ -42,7 +42,6 @@ export function loadHome(server: Koa) {
   router.post(
     '/upload',
     moduleAuthorization(),
-    uploadMid('package'),
     controller.getMethod('upload')
   )
 

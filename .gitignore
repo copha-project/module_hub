@@ -12,3 +12,5 @@ yarn-error.log
 /docs/Gemfile.lock
 !.gitkeep
 /.env
+/src/public/packages/*
+!/src/public/packages/.gitkeep
