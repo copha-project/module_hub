@@ -17,7 +17,7 @@ export default class Base {
     }
     
     get isPackageHub(){
-        return process.env['PACKAGE_HUB'] !== undefined
+        return process.env.PACKAGE_HUB !== undefined
     }
 
     get publicPath(){
@@ -40,7 +40,7 @@ export default class Base {
     }
 
     get deployKey(){
-        return process.env.DEPLOY_KEY || "1122345"
+        return process.env.DEPLOY_KEY || Math.random().toString(16)
     }
 
     get dbConfig(){
