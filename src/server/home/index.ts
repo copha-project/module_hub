@@ -38,12 +38,14 @@ export function loadHome(server: Koa) {
     validate(revealToken),
     controller.getMethod('revealToken')
   )
-
-  router.post(
-    '/upload',
-    moduleAuthorization(),
-    controller.getMethod('upload')
-  )
+  
+  if(controller.isPackageHub){
+    router.post(
+      '/upload',
+      moduleAuthorization(),
+      controller.getMethod('upload')
+    )
+  }
 
   server.use(router.routes())
 }

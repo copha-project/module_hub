@@ -60,11 +60,7 @@ export class HomeController extends Controller {
 
   //upload package
   public async upload(ctx: Context){
-    // console.log(ctx.req)
-    await uploadFile(ctx, this.packageStoragePath)
-    ctx.body = {
-      msg: "package upload ok"
-    }
-    ctx.state = 201
+    await uploadFile(ctx, path.join(this.packageStoragePath,ctx.state.moduleId))
+    ctx.status = 201
   }
 }

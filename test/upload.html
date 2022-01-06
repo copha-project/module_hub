@@ -7,8 +7,8 @@
     <title>upload test</title>
 </head>
 <body>
-    <form action="http://localhost:4396/upload" method="post">
-        <input type="file" name="package" id="">
+    <form action="http://localhost:3456/upload" method="post">
+        <input id="file" type="file" name="package" id="">
         <input type="hidden" name="authorization" value="34383465393662612d663837662d343764612d626337642d633763313061336665663536:571e978858ad9b73901505d5cc1ec6efbf2cdc0a">
         <button type="submit">upload</button>
         <button id="jsupload" type="button">upload with js</button>
@@ -19,14 +19,15 @@ uploadClick.addEventListener('click',upload)
 function upload(){
     const token = "34383465393662612d663837662d343764612d626337642d633763313061336665663536:571e978858ad9b73901505d5cc1ec6efbf2cdc0a"
     var formData = new FormData();
+    formData.append("version","0.0.1")
     // JavaScript file-like object
-    var content = '<a id="a"><b id="b">hey!</b></a>'; // the body of the new file...
-    var blob = new Blob([content], { type: "text/xml"});
-
-    formData.append("package", blob);
+    // var content = '<a id="a"><b id="b">hey!</b></a>'; // the body of the new file...
+    // var blob = new Blob([content], { type: "text/xml"});
+    var fileDom = document.querySelector('#file')
+    formData.append("package", fileDom.files[0]);
 
     var request = new XMLHttpRequest();
-    request.open("POST", "http://localhost:4396/upload");
+    request.open("POST", "http://localhost:3456/upload");
     request.setRequestHeader("authorization",token)
     request.send(formData);
 }
