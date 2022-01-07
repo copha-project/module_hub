@@ -4,6 +4,7 @@ import path from 'path'
 import fs from 'fs'
 import Busboy from 'busboy'
 import Utils from 'uni-utils'
+import { validate } from 'uuid'
 
 export const getEnvInfo = function(){
     return {
@@ -11,6 +12,10 @@ export const getEnvInfo = function(){
         hostname: os.hostname(),
         platform: `${process.platform}/${process.arch}`
     }
+}
+
+export function isUUID(s:string){
+  return validate(s)
 }
 
 export async function uploadFile(ctx: Context, saveDir:string) {    

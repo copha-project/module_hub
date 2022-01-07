@@ -3,7 +3,7 @@ import { getManager } from './manager'
 import Controller from '../../class/controller'
 import { PermissionError } from '../../class/error';
 import { Module, ModuleModel, UpdateModule, AddModule, AddPackage } from './model'
-
+import { isUUID } from '../../common'
 export class ModuleController extends Controller {
   private manager = getManager()
 
@@ -18,7 +18,11 @@ export class ModuleController extends Controller {
   }
 
   public async get(ctx: Context) {
-    ctx.body = new ModuleModel(await this.manager.findByName(ctx.params.name),true)
+    if(isUUID(ctx.params.id)){
+      ctx.body = new ModuleModel(await this.manager.findById(ctx.params.id),true)
+    }else{
+      ctx.body = new ModuleModel(await this.manager.findByName(ctx.params.id),true)
+    }
   }
 
   public async update(ctx: Context) {

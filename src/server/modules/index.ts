@@ -10,10 +10,10 @@ export function init(app: Koa) {
   const controller = ModuleController.getInstance<ModuleController>()
 
   router.get(
-    '/:name',
+    '/:id',
     controller.getMethod('get')
   )
-  
+
   router.put(
     '/:name/id',
     adminAuthorization(),
