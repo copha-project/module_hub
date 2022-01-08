@@ -97,12 +97,12 @@ export default class Repository extends Base {
         }
     }
 
-    protected getPackageStorageLink(){
-        return this.buildUrl(this.storageList[0])
+    public getPackageStorageLink(){
+        return this.storageList.map(this.buildUrl)
     }
 
     private buildUrl(options: { schema: any; host: any; port: any; namespace: any }){
         const {schema,host,port,namespace} = options
-        return `${ schema || 'http' }://${ host }${ port ? ':' + port : '' }/${ namespace ? namespace + '/' : '' }`
+        return `${ schema || 'http' }://${ host }${ port ? ':' + port : '' }${ namespace ? '/' + namespace : '' }`
     }
 }

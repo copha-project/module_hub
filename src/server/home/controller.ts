@@ -58,6 +58,15 @@ export class HomeController extends Controller {
     }
   }
 
+  public async packageHostConfig(ctx: Context){
+    ctx.body = {
+      hosts: getRemoteRepository().getPackageStorageLink(),
+      api: {
+        upload: '/upload'
+      }
+    }
+  }
+
   //upload package
   public async upload(ctx: Context){
     await uploadFile(ctx, path.join(this.packageStoragePath,ctx.state.moduleId))
