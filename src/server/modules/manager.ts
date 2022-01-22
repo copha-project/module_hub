@@ -33,8 +33,10 @@ export class ModuleManager extends Manager {
         }
     }
 
-    public async update(name: string, module: UpdateModule): Promise<Module> {
-        return this.repo.update!(name, module)
+    public async update(module: Module, updateModule: UpdateModule): Promise<Module> {
+        if(!updateModule.desc && !updateModule.repository) return module
+        if(updateModule.desc === module.desc && updateModule.repository === module.repository) return module
+        return this.repo.update!(module.name, updateModule)
     }
 
     public async delete(name: string): Promise<void> {

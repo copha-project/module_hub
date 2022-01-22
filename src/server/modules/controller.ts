@@ -29,7 +29,7 @@ export class ModuleController extends Controller {
     const module = await this.manager.findByName(ctx.params.name)
     if(module.id !== ctx.state.moduleId) throw new PermissionError()
     const updateData: UpdateModule = ctx.request.body
-    const updateModule = await this.manager.update(module.name, updateData)
+    const updateModule = await this.manager.update(module, updateData)
     ctx.body = new ModuleModel(updateModule)
     ctx.status = 201
   }
