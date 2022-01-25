@@ -25,7 +25,7 @@ export class NotFoundError extends AppError {
 
 export class DataRepeatError extends AppError {
   constructor(message: string) {
-    super(20000, message)
+    super(20001, message)
   }
 }
 

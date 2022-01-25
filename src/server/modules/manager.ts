@@ -48,7 +48,7 @@ export class ModuleManager extends Manager {
     }
 
     public async addPackage(module: Module, modulePackage: AddPackage){
-        if(module.packages?.findIndex(e=>e.version === modulePackage.version) !== -1) throw new DataRepeatError("add package existed")
+        if(module.packages?.findIndex(e=>e.version === modulePackage.version) !== -1) throw new DataRepeatError("version already exists")
         const updateModule: UpdateModule = {}
         updateModule.packages = module.packages?.concat(modulePackage)
         await this.repo.update(module.name, updateModule)

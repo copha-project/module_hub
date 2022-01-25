@@ -9,9 +9,9 @@ export const createModule = Joi.object({
 
 export const createModulePackage = Joi.object({
     version: Joi.string().trim().required(),
-    link: Joi.string().required(),
+    link: Joi.string(),
     md5: Joi.string().length(32).required(),
-    sha256: Joi.string().length(64).required()
+    sha1: Joi.string().length(40).required()
 })
 
 export const updateModule = Joi.object({

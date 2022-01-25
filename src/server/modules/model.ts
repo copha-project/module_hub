@@ -36,7 +36,7 @@ interface packageItem {
     version: string
     link: string
     md5: string
-    sha256: string
+    sha1: string
 }
 export class ModuleModel {
     public id: string
