@@ -47,6 +47,7 @@ export function loadHome(server: Koa) {
   if(controller.isPackageHub){
     router.post(
       '/upload',
+      bodyParser(),
       moduleAuthorization(),
       controller.getMethod('upload')
     )
