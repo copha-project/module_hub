@@ -2,7 +2,7 @@ import { Context } from 'koa'
 import Controller from '../../class/controller'
 import Utils from 'uni-utils'
 import path from 'path'
-import { getEnvInfo, uploadFile } from '../../common'
+import { getEnvInfo } from '../../common'
 import { exec } from 'child_process'
 import { promisify } from 'util'
 import { getRemoteRepository } from '../modules/repository'
@@ -69,7 +69,12 @@ export class HomeController extends Controller {
 
   //upload package
   public async upload(ctx: Context){
-    await uploadFile(ctx, path.join(this.packageStoragePath,ctx.state.moduleId))
-    ctx.status = 201
+    const tempFile = ctx.request.files?.package as any
+    const packageSaveDir = path.join(this.packageStoragePath,ctx.state.moduleId)
+    await Utils.createDir(packageSaveDir)
+    const fileName = `${ctx.request.body.version}`
+    await Utils.copyFile(tempFile?.path, path.join(packageSaveDir, fileName))
+    await Utils.rm(tempFile?.path)
+    ctx.status = 200
   }
 }

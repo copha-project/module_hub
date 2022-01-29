@@ -1,5 +1,6 @@
 import Koa from 'koa'
 import bodyParser from 'koa-bodyparser'
+import bodyDataParser from 'koa-body'
 import Router from 'koa-router'
 import { HomeController } from './controller'
 import { adminAuthorization, moduleAuthorization, validate } from '../middlewares'
@@ -47,7 +48,7 @@ export function loadHome(server: Koa) {
   if(controller.isPackageHub){
     router.post(
       '/upload',
-      bodyParser(),
+      bodyDataParser({multipart: true}),
       moduleAuthorization(),
       controller.getMethod('upload')
     )
