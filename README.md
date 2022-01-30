@@ -33,3 +33,20 @@ Copha 内部模块注册，下载中心
 - APP_PACKAGE_STORAGE_PATH
 
     存储包目录
+
+### API
+- 访问点 https://hub.copha.net/api/v1
+
+- GET /modules
+
+- GET /modules/id
+
+- PUT /modules/id
+
+- GET /modules/id
+
+- GET /modules/id/packages
+
+- POST /modules/id/packages
+
+
