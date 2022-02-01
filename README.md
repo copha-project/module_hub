@@ -37,16 +37,23 @@ Copha 内部模块注册，下载中心
 ### API
 - 访问点 https://hub.copha.net/api/v1
 
+#### Module API
+
 - GET /modules
+  模块列表
 
 - GET /modules/id
+  获取模块信息
 
 - PUT /modules/id
+  更新模块信息
 
-- GET /modules/id
+#### Package API
 
 - GET /modules/id/packages
+  获取模块包列表
 
 - POST /modules/id/packages
+  创建新版本包
 
 
