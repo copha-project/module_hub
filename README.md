@@ -50,6 +50,9 @@ Copha 内部模块注册，下载中心
 
 #### Package API
 
+- GET /pacakge_hosts
+  获取模块包上传节点
+
 - GET /modules/id/packages
   获取模块包列表
 
