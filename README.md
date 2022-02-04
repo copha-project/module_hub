@@ -40,23 +40,23 @@ Copha 内部模块注册，下载中心
 #### Module API
 
 - GET /modules
-  模块列表
+模块列表
 
 - GET /modules/id
-  获取模块信息
+获取模块信息
 
 - PUT /modules/id
-  更新模块信息
+更新模块信息
 
 #### Package API
 
 - GET /package_hosts
-  获取模块包上传节点
+获取模块包上传节点
 
 - GET /modules/id/packages
-  获取模块包列表
+获取模块包列表
 
 - POST /modules/id/packages
-  创建新版本包
+创建新版本包
 
 
