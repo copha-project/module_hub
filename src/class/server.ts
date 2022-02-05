@@ -3,7 +3,8 @@ import Koa from 'koa'
 import cors from '@koa/cors'
 import Compose from 'koa-compose'
 import { reqLog, errorHandler } from '../server/middlewares'
-import {init as loadModules} from '../server/modules'
+import { init as loadPackageHosts } from '../server/package_hosts'
+import { init as loadModules } from '../server/modules'
 import { loadHome } from '../server/home'
 import { getManager } from "../server/modules/manager"
 export default class Server extends Base {
@@ -19,6 +20,7 @@ export default class Server extends Base {
         .use(cors())
 
         loadHome(this.app)
+        loadPackageHosts(this.app)
     }
 
     async init(){

@@ -27,11 +27,6 @@ export function loadHome(server: Koa) {
   )
 
   router.get(
-    '/package_hosts',
-    controller.getMethod('packageHostConfig')
-  )
-
-  router.get(
     '/token',
     adminAuthorization(),
     controller.getMethod('genToken')

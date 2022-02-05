@@ -57,16 +57,7 @@ export class HomeController extends Controller {
       token: `${id}:${Utils.hash.sha1(this.keyConfig.AppKey+id+this.keyConfig.AppSecret)}`
     }
   }
-
-  public async packageHostConfig(ctx: Context){
-    ctx.body = {
-      hosts: getRemoteRepository().getPackageStorageLink(),
-      api: {
-        upload: '/upload'
-      }
-    }
-  }
-
+  
   //upload package
   public async upload(ctx: Context){
     const tempFile = ctx.request.files?.package as any
