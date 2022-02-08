@@ -11,7 +11,10 @@ const execPromise = promisify(exec)
 export class HomeController extends Controller {
   public async home(ctx: Context) {
     ctx.type = 'html'
-    ctx.body = "ok<br/><a href='/status'>look status</a>"
+    ctx.body = `Copha module hub<br/>
+                <a href='/api/v1/status'>go status</a><br/>
+                <a href='/api/v1/modules'>go modules</a><br/>
+                <a href='/api/v1/package_hosts'>go package hosts</a><br/>`
   }
 
   public async status(ctx: Context) {    

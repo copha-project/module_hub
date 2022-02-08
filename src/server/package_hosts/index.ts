@@ -1,12 +1,12 @@
 import Koa from 'koa'
 import bodyParser from 'koa-bodyparser'
-import Router from 'koa-router'
+import Router from '@koa/router'
 import { adminAuthorization, validate } from '../middlewares'
 import { PackageHostController } from './controller'
 import { createPackageHost } from './validators'
 
-export function init(app: Koa) {
-  const router = new Router({ prefix: '/api/v1/package_hosts' })
+export function init(appRouter: Router) {
+  const router = new Router({ prefix: '/package_hosts' })
   const controller = PackageHostController.getInstance<PackageHostController>()
 
   router.get(
@@ -21,5 +21,5 @@ export function init(app: Koa) {
     validate(createPackageHost),
     controller.getMethod('create')
   )
-  app.use(router.routes())
+  appRouter.use(router.routes())
 }

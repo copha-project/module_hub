@@ -1,13 +1,13 @@
 import Koa from 'koa'
 import bodyParser from 'koa-bodyparser'
 import bodyDataParser from 'koa-body'
-import Router from 'koa-router'
+import Router from '@koa/router'
 import { HomeController } from './controller'
 import { adminAuthorization, moduleAuthorization, validate } from '../middlewares'
 import { revealToken } from './validators'
 
-export function loadHome(server: Koa) {
-  const router = new Router({ prefix: '' })
+export function loadHome(appRouter: Router) {
+  const router = new Router()
   const controller = HomeController.getInstance<HomeController>()
 
   router.get(
@@ -49,5 +49,5 @@ export function loadHome(server: Koa) {
     )
   }
 
-  server.use(router.routes())
+  appRouter.use(router.routes())
 }

@@ -1,12 +1,11 @@
-import Koa from 'koa'
 import bodyParser from 'koa-bodyparser'
-import Router from 'koa-router'
+import Router from '@koa/router'
 import { ModuleController } from './controller'
 import { validate, moduleAuthorization, adminAuthorization } from '../middlewares'
 import { createModule, createModulePackage, updateId, updateModule } from './validators'
 
-export function init(app: Koa) {
-  const router = new Router({ prefix: '/api/v1/modules' })
+export function init(appRouter: Router) {
+  const router = new Router({ prefix: '/modules' })
   const controller = ModuleController.getInstance<ModuleController>()
 
   router.get(
@@ -68,5 +67,5 @@ export function init(app: Koa) {
     controller.getMethod("deletePackage")
   )
 
-  app.use(router.routes())
+  appRouter.use(router.routes())
 }

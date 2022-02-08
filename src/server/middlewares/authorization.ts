@@ -1,9 +1,9 @@
 import { Context } from 'koa'
 import { PermissionError } from '../../class/error';
-import { IMiddleware } from 'koa-router'
+import { Middleware } from '@koa/router'
 import Utils from 'uni-utils'
 
-export function moduleAuthorization(): IMiddleware {
+export function moduleAuthorization(): Middleware {
   return async (ctx: Context, next: Callback) => {
     const tokenCode = ctx.headers.authorization || ctx.request.body.authorization
     if(!tokenCode) throw new PermissionError()  
@@ -16,7 +16,7 @@ export function moduleAuthorization(): IMiddleware {
   }
 }
 
-export function adminAuthorization(): IMiddleware {
+export function adminAuthorization(): Middleware {
   return async (ctx: Context, next: Callback) => {
     if (ctx.headers.authorization !== ctx.appConfig.key.AppSecret) {
       throw new PermissionError();
