@@ -19,19 +19,19 @@ export class AppError extends Error {
 
 export class NotFoundError extends AppError {
   constructor(message: string) {
-    super(20000, message)
+    super(404, message)
   }
 }
 
 export class DataRepeatError extends AppError {
   constructor(message: string) {
-    super(20001, message)
+    super(400, message)
   }
 }
 
 export class ValidationError extends AppError {
   constructor(message: string, error?: Error) {
-    super(30000, message, error)
+    super(400, message, error)
   }
 }
 
@@ -39,7 +39,7 @@ export class FieldValidationError extends AppError {
   public fields: FieldError[]
 
   constructor(message: string, fields: FieldError[], error?: Error) {
-    super(30001, message, error)
+    super(400, message, error)
     this.fields = fields
   }
 
@@ -54,13 +54,13 @@ export class FieldValidationError extends AppError {
 
 export class UnauthorizedError extends AppError {
   constructor(error?: Error) {
-    super(30002, 'Unauthorized user', error)
+    super(401, 'Unauthorized user', error)
   }
 }
 
 export class PermissionError extends AppError {
   constructor(error?: Error) {
-    super(30003, 'Permission denied', error)
+    super(403, 'Permission denied', error)
   }
 }
 

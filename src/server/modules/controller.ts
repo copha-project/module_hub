@@ -9,7 +9,6 @@ export class ModuleController extends Controller {
 
   public async resetId(ctx: Context){
     await this.manager.resetId(ctx.params.name, ctx.request.body.id)
-    ctx.status = 200
   }
 
   public async getAll(ctx: Context) {
@@ -31,7 +30,6 @@ export class ModuleController extends Controller {
     const updateData: UpdateModule = ctx.request.body
     const updateModule = await this.manager.update(module, updateData)
     ctx.body = new ModuleModel(updateModule)
-    ctx.status = 201
   }
 
   public async create(ctx: Context) {
@@ -40,7 +38,6 @@ export class ModuleController extends Controller {
     module.packages = []
     const newModule = await this.manager.create(module as Module)
     ctx.body = new ModuleModel(newModule)
-    ctx.status = 201
   }
 
   public async delete(ctx: Context) {
@@ -60,13 +57,11 @@ export class ModuleController extends Controller {
     const modulePackage: AddPackage = ctx.request.body
     const newPackage = await this.manager.addPackage(module, modulePackage)
     ctx.body = newPackage
-    ctx.status = 201
   }
 
   public async deletePackage(ctx: Context) {
     const module = await this.manager.findByName(ctx.params.name)
     if(module.id !== ctx.state.moduleId) throw new PermissionError()
     await this.manager.removePackageByVersion(module, ctx.params.ver)
-    ctx.status = 204
   }
 }
