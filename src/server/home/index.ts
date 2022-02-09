@@ -3,7 +3,7 @@ import bodyParser from 'koa-bodyparser'
 import bodyDataParser from 'koa-body'
 import Router from '@koa/router'
 import { HomeController } from './controller'
-import { adminAuthorization, moduleAuthorization, validate } from '../middlewares'
+import { adminAuthorization, moduleAuthorization, validate } from '../../middlewares'
 import { revealToken } from './validators'
 
 export function loadHome(appRouter: Router) {

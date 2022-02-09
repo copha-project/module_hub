@@ -1,7 +1,7 @@
 import bodyParser from 'koa-bodyparser'
 import Router from '@koa/router'
 import { ModuleController } from './controller'
-import { validate, moduleAuthorization, adminAuthorization } from '../middlewares'
+import { validate, moduleAuthorization, adminAuthorization } from '../../middlewares'
 import { createModule, createModulePackage, updateId, updateModule } from './validators'
 
 export function init(appRouter: Router) {

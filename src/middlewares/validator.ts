@@ -1,7 +1,7 @@
 import { Context } from 'koa'
 import { Middleware } from '@koa/router'
 import Joi, { ValidationResult } from 'joi'
-import { FieldValidationError } from '../../class/error'
+import { FieldValidationError } from '../class/error'
 
 export function validate(validtor: Joi.Schema): Middleware {
     return async (ctx: Context, next: Callback) => {

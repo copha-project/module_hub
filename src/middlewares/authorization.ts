@@ -1,5 +1,5 @@
 import { Context } from 'koa'
-import { PermissionError } from '../../class/error';
+import { PermissionError } from '../class/error';
 import { Middleware } from '@koa/router'
 import Utils from 'uni-utils'
 

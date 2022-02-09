@@ -1,7 +1,7 @@
 import Koa from 'koa'
 import bodyParser from 'koa-bodyparser'
 import Router from '@koa/router'
-import { adminAuthorization, validate } from '../middlewares'
+import { adminAuthorization, validate } from '../../middlewares'
 import { PackageHostController } from './controller'
 import { createPackageHost } from './validators'
 
