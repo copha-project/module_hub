@@ -1,4 +1,3 @@
-import Koa from 'koa'
 import bodyParser from 'koa-bodyparser'
 import bodyDataParser from 'koa-body'
 import Router from '@koa/router'
@@ -6,7 +5,7 @@ import { HomeController } from './controller'
 import { adminAuthorization, moduleAuthorization, validate } from '../../middlewares'
 import { revealToken } from './validators'
 
-export function loadHome(appRouter: Router) {
+export function getRoutes() {
   const router = new Router()
   const controller = HomeController.getInstance<HomeController>()
 
@@ -48,6 +47,6 @@ export function loadHome(appRouter: Router) {
       controller.getMethod('upload')
     )
   }
-
-  appRouter.use(router.routes())
+  
+  return router.routes()
 }

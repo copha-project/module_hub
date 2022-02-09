@@ -4,7 +4,7 @@ import { ModuleController } from './controller'
 import { validate, moduleAuthorization, adminAuthorization } from '../../middlewares'
 import { createModule, createModulePackage, updateId, updateModule } from './validators'
 
-export function init(appRouter: Router) {
+export function getRoutes() {
   const router = new Router({ prefix: '/modules' })
   const controller = ModuleController.getInstance<ModuleController>()
 
@@ -66,6 +66,6 @@ export function init(appRouter: Router) {
     moduleAuthorization(),
     controller.getMethod("deletePackage")
   )
-
-  appRouter.use(router.routes())
+  
+  return router.routes()
 }

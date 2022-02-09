@@ -5,7 +5,7 @@ import { adminAuthorization, validate } from '../../middlewares'
 import { PackageHostController } from './controller'
 import { createPackageHost } from './validators'
 
-export function init(appRouter: Router) {
+export function getRoutes() {
   const router = new Router({ prefix: '/package_hosts' })
   const controller = PackageHostController.getInstance<PackageHostController>()
 
@@ -21,5 +21,5 @@ export function init(appRouter: Router) {
     validate(createPackageHost),
     controller.getMethod('create')
   )
-  appRouter.use(router.routes())
+  return router.routes()
 }

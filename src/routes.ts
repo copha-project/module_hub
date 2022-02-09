@@ -1,8 +1,8 @@
-import Base from "./class/base";
+import Base from "./class/base"
 import Router from "@koa/router"
-import { init as loadPackageHosts } from './server/package_hosts'
-import { init as loadModules } from './server/modules'
-import { loadHome } from './server/home'
+import { getRoutes as getPackageHostsRoutes } from './server/package_hosts'
+import { getRoutes as getModulesRoutes } from './server/modules'
+import { getRoutes as getHomeRoutes } from './server/home'
 
 export default class Routes extends Base{
     private appRouter = new Router()
@@ -11,10 +11,11 @@ export default class Routes extends Base{
     })
     constructor(){
         super()
-        loadHome(this.appRouter)
-        loadPackageHosts(this.apiRouter)
+        this.appRouter.use(getHomeRoutes())
+        
         if(!this.isPackageHub){
-            loadModules(this.apiRouter)
+            this.appRouter.use(getPackageHostsRoutes())
+            this.apiRouter.use(getModulesRoutes())
         }
 
         this.apiRouter.get('api','/', ctx=>ctx.body = "api service")
