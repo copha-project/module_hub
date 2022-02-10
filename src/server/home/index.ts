@@ -39,7 +39,7 @@ export function getRoutes() {
     controller.getMethod('revealToken')
   )
   
-  if(controller.isPackageHub){
+  if(controller.config.isPackageHub){
     router.post(
       '/upload',
       bodyDataParser({multipart: true}),

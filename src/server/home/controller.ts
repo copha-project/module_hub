@@ -5,7 +5,7 @@ import path from 'path'
 import { getEnvInfo } from '../../common'
 import { exec } from 'child_process'
 import { promisify } from 'util'
-import { getRemoteRepository } from '../modules/repository'
+import { getRemoteRepository } from '../../repository/remote'
 const execPromise = promisify(exec)
 
 export class HomeController extends Controller {
@@ -21,7 +21,7 @@ export class HomeController extends Controller {
     ctx.body = {
       name: "copha modules hub service",
       version: (await Utils.readJson(path.join(__dirname,'../../../package.json'))).version,
-      isPackageHub: this.isPackageHub,
+      isPackageHub: this.config.isPackageHub,
       lastCommitHash: (await getRemoteRepository().getLastCommit()).sha,
       ... getEnvInfo()
     }
@@ -33,7 +33,7 @@ export class HomeController extends Controller {
       return
     }
     try {
-      const deployFile = path.join(this.appRootPath,'deploy.sh')
+      const deployFile = path.join(this.config.appRootPath,'deploy.sh')
       const {stdout,stderr} = await execPromise(deployFile,{
         windowsHide : true
       })
@@ -49,7 +49,7 @@ export class HomeController extends Controller {
     const moduleIdHex = Buffer.from(require('crypto').randomUUID()).toString('hex')
     ctx.body = {
       moduleId: Buffer.from(moduleIdHex,'hex').toString(),
-      token: `${moduleIdHex}:${Utils.hash.sha1(this.keyConfig.AppKey+moduleIdHex+this.keyConfig.AppSecret)}`
+      token: `${moduleIdHex}:${Utils.hash.sha1(this.config.keyConfig.AppKey+moduleIdHex+this.config.keyConfig.AppSecret)}`
     }
   }
   
@@ -57,14 +57,14 @@ export class HomeController extends Controller {
     const id = Buffer.from(ctx.request.body.id).toString('hex')
     ctx.body = {
       moduleId: ctx.request.body.id,
-      token: `${id}:${Utils.hash.sha1(this.keyConfig.AppKey+id+this.keyConfig.AppSecret)}`
+      token: `${id}:${Utils.hash.sha1(this.config.keyConfig.AppKey+id+this.config.keyConfig.AppSecret)}`
     }
   }
   
   //upload package
   public async upload(ctx: Context){
     const tempFile = ctx.request.files?.package as any
-    const packageSaveDir = path.join(this.packageStoragePath,ctx.state.moduleId)
+    const packageSaveDir = path.join(this.config.packageStoragePath,ctx.state.moduleId)
     await Utils.createDir(packageSaveDir)
     const fileName = `${ctx.request.body.version}`
     await Utils.copyFile(tempFile?.path, path.join(packageSaveDir, fileName))

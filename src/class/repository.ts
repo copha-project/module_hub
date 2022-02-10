@@ -90,14 +90,15 @@ export default class Repository extends Base {
 
     async loadStorageList(){
         try {
-            const storageData = await Utils.download(this.dbConfig.StorageSource,{})
+            const storageData = await Utils.download(this.config.dbConfig.StorageSource,{})
             this.storageList = JSON.parse(Buffer.from(JSON.parse(storageData).content,'base64').toString('utf-8'))
         } catch (error:any) {
             this.log.err(`loadStorageList error: ${error.message}`)
         }
     }
 
-    public getPackageStorageLink(){
+    public async getPackageStorageLink(){
+        if(!this.storageList.length) await this.loadStorageList()
         return this.storageList.map(this.buildUrl)
     }
 

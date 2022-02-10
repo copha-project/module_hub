@@ -1,9 +1,9 @@
-import Repository from "../../../class/repository"
+import Repository from "../class/repository"
 import { Octokit } from "@octokit/core"
 export default class RemoteRepository extends Repository{
     private sha: string = ""
     private lastCommit: {sha:string} = {sha:""}
-    private githubAPI = new Octokit({auth: this.appConfig.key.GithubToken})
+    private githubAPI = new Octokit({auth: this.config.appConfig.key.GithubToken})
 
     private moduleMeta = {
         owner: "copha-project",
@@ -61,3 +61,5 @@ export default class RemoteRepository extends Repository{
         return this.lastCommit.sha.slice(0,7)
     }
 }
+
+export const getRemoteRepository = () => RemoteRepository.getInstance<RemoteRepository>()

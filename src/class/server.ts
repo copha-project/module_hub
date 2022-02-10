@@ -12,7 +12,7 @@ export default class Server extends Base {
         super()
         this.log.debug('init Server')
         this.app = new Koa()
-        this.app.context.appConfig = this.appConfig
+        this.app.context.appConfig = this.config.appConfig
         this.app.context.log = this.log
     }
 
@@ -21,7 +21,7 @@ export default class Server extends Base {
         .use(Compose([reqLog, reply, catchError]))
         .use(Cors())
 
-        if(!this.isPackageHub){
+        if(!this.config.isPackageHub){
             this.log.info('Service mode: meta hub')
             await getManager().loadModulesData()
         }else{
@@ -33,7 +33,7 @@ export default class Server extends Base {
     
     async launch() {
         await this.init()
-        this.app.listen(this.serverConfig.port)
-        console.log(`The API server is running at : ${this.serverConfig.host}:${this.serverConfig.port}`)
+        this.app.listen(this.config.serverConfig.port)
+        console.log(`The API server is running at : ${this.config.serverConfig.host}:${this.config.serverConfig.port}`)
     }
 }

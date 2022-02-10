@@ -13,8 +13,8 @@ export default class Routes extends Base{
         super()
         this.appRouter.use(getHomeRoutes())
         
-        if(!this.isPackageHub){
-            this.appRouter.use(getPackageHostsRoutes())
+        if(!this.config.isPackageHub){
+            this.apiRouter.use(getPackageHostsRoutes())
             this.apiRouter.use(getModulesRoutes())
         }
 

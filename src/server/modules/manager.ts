@@ -1,13 +1,13 @@
 import { Module, ModuleModel, AddPackage, UpdateModule } from "./model"
 import Manager from "../../class/manager"
-import { getRepository } from "./repository"
+import { getRepository } from "../../repository"
 import { NotFoundError, DataRepeatError } from "../../class/error"
 export class ModuleManager extends Manager {
     private repo!: IRepository
 
     async loadModulesData(){
-        this.log.info(`Load Modules data from : ${this.dbConfig.RepositorySource}`)
-        this.repo = getRepository(this.dbConfig.RepositorySource)
+        this.log.info(`Load Modules data from : ${this.config.dbConfig.RepositorySource}`)
+        this.repo = getRepository()
         return this.repo.init()
     }
 

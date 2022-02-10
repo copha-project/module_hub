@@ -1,9 +1,10 @@
 import path from "path"
-import { readJsonSync, saveFile, readFile } from 'uni-utils'
-import Repository from "../../../class/repository"
+import { saveFile, readFile } from 'uni-utils'
+import Repository from "../class/repository"
 
 export default class LocalRepository extends Repository{
     async init() {
+        await this.loadStorageList()
         await this.sync()
     }
 
@@ -18,7 +19,7 @@ export default class LocalRepository extends Repository{
     }
 
     private get dbFilePath() {
-        return path.join(this.publicPath, 'modules.json')
+        return path.join(this.config.publicPath, 'modules.json')
     }
 
     protected content2b(data:unknown){
@@ -29,3 +30,5 @@ export default class LocalRepository extends Repository{
         return JSON.parse(data)
     }
 }
+
+export const getLocalRepository = () => LocalRepository.getInstance<LocalRepository>()
