@@ -1,6 +1,12 @@
-export interface AddHost extends PackageHostItem {}
+export interface AddHost extends PackageHost {}
 
-export interface PackageHostItem {
+export interface PackageHost {
+    id: string
+    protocol: string
     host: string
     port: number
+    api: {
+        upload: string
+        package: string
+    }
 }

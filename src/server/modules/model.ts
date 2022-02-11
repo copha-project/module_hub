@@ -30,6 +30,7 @@ export interface Module {
     type: ModuleType
     repository: string
     packages?: packageItem[]
+    packageHost?: string
 }
 
 interface packageItem {
@@ -45,6 +46,7 @@ export class ModuleModel {
     public type: string
     public repository: string
     public packages?: packageItem[]
+    public packageHost?: string
 
     constructor(module: Module, fullInfo: boolean = false) {
         this.id = module.id
@@ -52,9 +54,10 @@ export class ModuleModel {
         this.desc = module.desc
         this.type = module.type
         this.repository = module.repository
+        this.packageHost = module.packageHost
         
         if(fullInfo){
             this.packages = module.packages
-        } 
+        }
     }
 }

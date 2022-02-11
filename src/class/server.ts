@@ -4,6 +4,7 @@ import Cors from '@koa/cors'
 import Compose from 'koa-compose'
 import { reqLog, catchError, reply } from '../middlewares'
 import { getManager } from "../server/modules/manager"
+import { getPackageHostManager } from "../server/package_hosts/manager"
 import { getRoutes } from '../routes'
 export default class Server extends Base {
     private app: Koa
@@ -23,7 +24,8 @@ export default class Server extends Base {
 
         if(!this.config.isPackageHub){
             this.log.info('Service mode: meta hub')
-            await getManager().loadModulesData()
+            await getManager().loadData()
+            await getPackageHostManager().loadData()
         }else{
             this.log.info('Service mode: package hub')
         }

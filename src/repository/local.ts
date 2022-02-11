@@ -3,23 +3,25 @@ import { saveFile, readFile } from 'uni-utils'
 import Repository from "../class/repository"
 
 export default class LocalRepository extends Repository{
+    private docNames = ['modules','packageHosts']
     async init() {
-        await this.loadStorageList()
         await this.sync()
     }
 
-    protected async sync(content?:string, commitMessage:string="update module data"){
-        this.log.info("sync: " + commitMessage)
-        if(content){
-            await saveFile(content,this.dbFilePath)
+    protected async sync(doc?: any[], msg?: string){
+        this.log.info("sync: " + (msg || "update module data"))
+        if(doc){
+            await saveFile(this.content2b(doc),this.docFilePath(this.currentDocName))
         }else{
-            const modulesData = await readFile(this.dbFilePath)
-            this.db = this.content2o(modulesData)
+            for (const doc of this.docNames) {
+                const docData = await readFile(this.docFilePath(doc))
+                this.use(doc).setCurrentDoc(this.content2o(docData))
+            }
         }
     }
 
-    private get dbFilePath() {
-        return path.join(this.config.publicPath, 'modules.json')
+    private docFilePath(name:string) {
+        return path.join(this.config.publicPath, `${name}.json`)
     }
 
     protected content2b(data:unknown){

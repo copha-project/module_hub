@@ -1,6 +1,3 @@
 {
-    "RepositorySource":"Remote",
-    "LoacalSource": "modules.json",
-    "RemoteSource": "https://api.github.com/repos/copha-project/module-database/contents/modules.json",
-    "StorageSource": "https://api.github.com/repos/copha-project/module-database/contents/storage.json"
+    "RepositorySource":"Remote"
 }

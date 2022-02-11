@@ -1,19 +1,19 @@
 import Repository from "../class/repository"
 import { Octokit } from "@octokit/core"
+
+const RepoMeta = {
+    owner: "copha-project",
+    repo: "module-database",
+    path: ''
+}
 export default class RemoteRepository extends Repository{
-    private sha: string = ""
+    private docNames = ['modules','packageHosts']
+    private shas:{[key:string]:string} = {}
     private lastCommit: {sha:string} = {sha:""}
     private githubAPI = new Octokit({auth: this.config.appConfig.key.GithubToken})
 
-    private moduleMeta = {
-        owner: "copha-project",
-        repo: "module-database",
-        path: "modules.json",
-    }
-
     async init(){
         try {
-            await super.loadStorageList()
             await this.getLastCommit()
             await this.sync()
         } catch (error:any) {
@@ -21,34 +21,36 @@ export default class RemoteRepository extends Repository{
         }
     }
 
-    protected async sync(content?:string, commitMessage:string="update module data"){
-        if(content){
+    protected async sync(doc?: any[], msg?: string){
+        if(doc){
+            const commitMessage = msg || `update ${this.currentDocName} data`
             const resp = await this.githubAPI.request("PUT /repos/{owner}/{repo}/contents/{path}", {
-                ...this.moduleMeta,
-                branch: "main",
+                ...this.getRepoMeta(this.currentDocName),
                 message: commitMessage,
-                content: content,
-                sha: this.sha
+                content: this.content2b(doc),
+                sha: this.shas[this.currentDocName]
             })
             if(resp.status === 200){
                 this.log.info("sync: " + commitMessage)
-                this.sha = resp.data.content?.sha!
+                this.shas[this.currentDocName] = resp.data.content?.sha!
             }
         }else{
-            const resp = await this.githubAPI.request("GET /repos/{owner}/{repo}/contents/{path}", {
-                ...this.moduleMeta
-            })
-            if(resp.status === 200){
-                const modulesData = resp.data as {content:string, sha: string}
-                this.sha = modulesData.sha
-                this.db = this.content2o(modulesData.content)
+            for (const doc of this.docNames) {
+                const resp = await this.githubAPI.request("GET /repos/{owner}/{repo}/contents/{path}", {
+                    ...this.getRepoMeta(doc)
+                })
+                if(resp.status === 200){
+                    const docData = resp.data as {content:string, sha: string}
+                    this.use(doc).setCurrentDoc(this.content2o(docData.content))
+                    this.shas[doc] = docData.sha
+                }   
             }
         }
     }
 
     async getLastCommit(){
         const res = await this.githubAPI.request('GET /repos/{owner}/{repo}/commits', {
-            ...this.moduleMeta,
+            ...this.getRepoMeta(this.docNames[0]),
             per_page: 1
         })
         if(res.status === 200){
@@ -56,7 +58,20 @@ export default class RemoteRepository extends Repository{
         }
         return this.lastCommit
     }
-    
+
+    private getRepoMeta(file:string){
+        RepoMeta.path = `${file}.json`
+        return RepoMeta
+    }
+
+    protected content2b(data:unknown){
+        return Buffer.from(JSON.stringify(data, undefined, 4)).toString('base64')
+    }
+
+    protected content2o(data:string){
+        return JSON.parse(Buffer.from(data,'base64').toString('utf-8'))
+    }
+
     get lastCommitHash(){
         return this.lastCommit.sha.slice(0,7)
     }

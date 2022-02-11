@@ -7,13 +7,12 @@ declare interface ServerConfig {
 
 interface IRepository {
     init(args?:any): void
+    use(doc:string): this
     findById(id: string): Promise<Module>
     findByName?(name: string): Promise<Module>
     add(module: Module): Promise<Module>
-    update(id: string, module: updateModule): Promise<Module>
-    update(name: string, module: updateModule): Promise<Module>
+    update(item:any, key?:string): Promise<Module>
     delete(id: string): Promise<void>
     deleteByName?(name: string): Promise<void>
-    deletePackageByIndex(module: Module, index:number): Promise<void>
-    all(): Promise<Module[]>
+    all<T>(): Promise<T[]>
 }
