@@ -1,49 +1,70 @@
 import Base from "./base"
-
-const itemNotFound = new Error("item not found")
-const noData = new Error("not data found")
-const methodNotImplemented = new Error("method not implemented")
+interface BaseModel {
+    id: string
+}
 export default class Repository extends Base {
+    static errors = {
+        noDocSelected : new Error("no doc selected"),
+        itemNotFound : new Error("item not found"),
+        noData : new Error("not data found"),
+        methodNotImplemented : new Error("method not implemented")
+    }
+    get errors(){
+        return Repository.errors
+    }
+
     private db: { [doc: string]: any[] } = {}
     private useDoc!: string
 
     protected async sync(doc?: any[], msg?: string) {
-        throw methodNotImplemented
+        throw this.errors.methodNotImplemented
+    }
+
+    public async init(){
+        throw this.errors.methodNotImplemented
     }
 
     public use(doc: string) {
+        if(!doc) throw this.errors.noDocSelected
         this.useDoc = doc
         return this
     }
 
     async all<T>(): Promise<T[]> {
-        if(!this.db[this.useDoc]) throw noData
+        if(!this.db[this.useDoc]) throw this.errors.noData
         return this.db[this.useDoc]
     }
 
     async findById<T>(id: string): Promise<T> {
         const item = this.currentDoc.find(e => e.id === id)
-        if (!item) throw itemNotFound
+        if (!item) throw this.errors.itemNotFound
+        return item
+    }
+
+    async findBy<T>(value: string, key: string): Promise<T> {
+        const item = this.currentDoc.find(e => e[key] === value)
+        if (!item) throw this.errors.itemNotFound
         return item
     }
 
     async findByName<T>(name: string): Promise<T> {
         const item = this.currentDoc.find(e => e.name === name)
-        if (!item) throw itemNotFound
+        if (!item) throw this.errors.itemNotFound
         return item
     }
 
-    async add(item: any): Promise<void> {
+    async add<T extends BaseModel>(item: T): Promise<T> {
         const cloneDb = Object.assign([], this.currentDoc)
         cloneDb.push(item)
-        await this.sync(cloneDb, `add item: ${item?.name || JSON.stringify(item)}`)
+        await this.sync(cloneDb, `add item: ${item?.id || JSON.stringify(item)}`)
         this.setCurrentDoc(cloneDb)
+        return item
     }
 
     async update(item: any, key?: string) {
         const itemKey = key || 'id'
         const itemIndex = this.currentDoc.findIndex(e => e[itemKey] === item[itemKey])
-        if (itemIndex === -1) throw itemNotFound
+        if (itemIndex === -1) throw this.errors.itemNotFound
 
         const cloneDb: any[] = Object.assign([], this.currentDoc)
         const cloneItem = cloneDb[itemIndex]

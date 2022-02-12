@@ -17,3 +17,5 @@ export const getRepository = (type?:RepositorySource) => {
         return getRemoteRepository()
     }
 }
+
+export { default as Repository } from '../class/repository'
