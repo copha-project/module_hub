@@ -10,7 +10,7 @@ interface IRepository {
     use(doc:string): this
     findById(id: string): Promise<Module>
     findByName?(name: string): Promise<Module>
-    add(module: Module): Promise<Module>
+    add<T>(item: T): Promise<T>
     update(item:any, key?:string): Promise<Module>
     delete(id: string): Promise<void>
     deleteByName?(name: string): Promise<void>

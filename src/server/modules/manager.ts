@@ -1,12 +1,11 @@
-import { Module, ModuleModel, AddPackage, UpdateModule } from "./model"
+import { Module, AddPackage, UpdateModule } from "./model"
 import Manager from "../../class/manager"
-import { getRepository, RepositorySource } from "../../repository"
-import { NotFoundError, DataRepeatError } from "../../class/error"
+import { getRepository } from "../../repository"
+import { NotFoundError } from "../../class/error"
 import { sample } from 'lodash'
 import { PackageHost } from "../package_hosts/model"
 export class ModuleManager extends Manager {
-    private repo!: IRepository
-    private useDoc = 'modules'
+    protected useDoc = 'modules'
 
     async loadData(){
         this.log.info(`Load Modules data from : ${this.config.dbConfig.RepositorySource}`)
