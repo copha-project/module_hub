@@ -1,5 +1,4 @@
 export interface AddHost extends PackageHost {}
-
 export interface PackageHost {
     id: string
     protocol: string

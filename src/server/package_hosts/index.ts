@@ -2,7 +2,7 @@ import bodyParser from 'koa-body'
 import Router from '@koa/router'
 import { adminAuthorization, validate } from '../../middlewares'
 import { PackageHostController } from './controller'
-import { createPackageHost } from './validators'
+import { createPackageHost, updatePackageHost } from './validators'
 
 export function getRoutes() {
   const router = new Router({ prefix: '/package_hosts' })
@@ -13,6 +13,16 @@ export function getRoutes() {
     controller.getMethod('getAll')
   )
   
+  router.get(
+    '/:id',
+    controller.getMethod('get')
+  )
+
+  router.delete(
+    '/:id',
+    controller.getMethod('delete')
+  )
+
   router.post(
     '/',
     adminAuthorization(),
@@ -20,5 +30,14 @@ export function getRoutes() {
     validate(createPackageHost),
     controller.getMethod('create')
   )
+
+  router.put(
+    '/',
+    adminAuthorization(),
+    bodyParser(),
+    validate(updatePackageHost),
+    controller.getMethod('update')
+  )
+
   return router.routes()
 }

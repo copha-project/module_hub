@@ -1,7 +1,7 @@
 import { Module, AddPackage, UpdateModule } from "./model"
 import Manager from "../../class/manager"
 import { getRepository } from "../../repository"
-import { NotFoundError } from "../../class/error"
+import { AppError, NotFoundError } from "../../class/error"
 import { sample } from 'lodash'
 import { PackageHost } from "../package_hosts/model"
 export class ModuleManager extends Manager {
@@ -24,7 +24,7 @@ export class ModuleManager extends Manager {
     public async create(module: Module): Promise<Module> {
         try {
             const packageHosts = await this.repo.use('packageHosts').all<PackageHost>()
-            if(!packageHosts.length) throw Error("not get a package host")
+            if(!packageHosts.length) throw new AppError("not get a package host")
             module.packageHost = sample(packageHosts)?.id
             await this.repo.findByName!(module.name)
             throw Error("the module name is existed!")

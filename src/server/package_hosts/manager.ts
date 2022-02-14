@@ -1,6 +1,6 @@
 import BaseManager from "../../class/manager"
 import { getRepository } from "../../repository"
-import { NotFoundError } from "../../class/error"
+import { AppError, NotFoundError } from "../../class/error"
 import { PackageHost } from "./model"
 import { randomUUID } from 'crypto'
 export class Manager extends BaseManager {
@@ -13,38 +13,38 @@ export class Manager extends BaseManager {
     }
 
     public async findByName(name: string): Promise<PackageHost> {
-        return this.repo.findByName!(name)
+        return this.db.findByName!(name)
     }
 
     public async findById(id: string): Promise<PackageHost> {
-        return this.repo.findById(id)
+        return this.db.findById(id)
     }
 
     public async create(host: PackageHost): Promise<PackageHost> {
-        try {
-            await this.db.findBy(host.host,'host')
-            throw Error("the host is existed!")
-        } catch (error) {
-            if((error as Error).message === this.repo.errors.itemNotFound.message){
-                host.id = randomUUID()
-                await this.db.add<PackageHost>(host)
-                return host
-            }else{
-                throw error
-            }
-        }
+        const queryList = await this.db.findArrBy(host.host,'host')
+        if(queryList.length > 0) throw new AppError("the host is existed!")
+        
+        host.id = randomUUID()
+        await this.db.add<PackageHost>(host)
+        return host
     }
 
-    public async update(module: PackageHost, updateModule: PackageHost): Promise<PackageHost> {
-        return this.repo.update(updateModule)
+    public async update(host: PackageHost, updateHost: PackageHost): Promise<PackageHost> {
+        if(updateHost.protocol && updateHost.protocol !== host.protocol) host.protocol = updateHost.protocol
+        if(updateHost.host && updateHost.host !== host.host) host.host = updateHost.host
+        if(updateHost.port && updateHost.port !== host.port) host.port = updateHost.port
+        if(updateHost.api && updateHost.api !== host.api) host.api = updateHost.api
+
+        await this.db.update(host)
+        return host
     }
 
-    public async delete(name: string): Promise<void> {
-        return this.repo.deleteByName!(name)
+    public async delete(id: string): Promise<void> {
+        return this.db.delete(id)
     }
 
     public async all() {
-        return this.repo.use(this.useDoc).all<PackageHost>()
+        return this.db.all<PackageHost>()
     }
 
     private buildUrl(options: PackageHost){

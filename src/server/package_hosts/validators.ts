@@ -9,3 +9,14 @@ export const createPackageHost = Joi.object({
         package: Joi.string().trim().required()
     }).required()
 })
+
+export const updatePackageHost = Joi.object({
+    id: Joi.string().trim().required(),
+    protocol: Joi.string().trim(),
+    host: Joi.string().trim(),
+    port: Joi.number(),
+    api: Joi.object({
+        upload: Joi.string().trim(),
+        package: Joi.string().trim()
+    })
+})
