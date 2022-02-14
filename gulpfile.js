@@ -4,7 +4,6 @@ const ts = require("gulp-typescript")
 const merge = require('merge2')
 
 const paths = {
-    resource: ["src/public/**/*"],
     config: ["src/config/**/*.json"]
 }
 
@@ -13,8 +12,7 @@ gulp.task('clean', function(){
 });
 
 gulp.task("copy-static-file", function () {
-    gulp.src(paths.config).pipe(gulp.dest("dist/config"))
-    return gulp.src(paths.resource).pipe(gulp.dest("dist/public"))
+  return gulp.src(paths.config).pipe(gulp.dest("dist/config"))
 });
 
 gulp.task("compile-ts", function () {

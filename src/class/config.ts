@@ -20,7 +20,7 @@ export default class Config{
     }
 
     get publicPath(){
-        return process.env.APP_PUBLIC_PATH || path.join(__dirname,'../public')
+        return process.env.APP_PUBLIC_PATH || path.join(this.appRootPath,'./public')
     }
 
     get packageStoragePath(){
@@ -35,7 +35,7 @@ export default class Config{
     }
 
     get appRootPath(){
-        return path.join(__dirname,'../../')
+        return path.join(__dirname,'../')
     }
 
     get dbConfig(){

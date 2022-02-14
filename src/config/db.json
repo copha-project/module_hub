@@ -1,3 +1,4 @@
 {
-    "RepositorySource":"Remote"
+    "RepositorySource":"Remote",
+    "Doc": ["modules","packageHosts"]
 }

@@ -1,5 +1,5 @@
-import server from './class/server'
+import { getServer } from './class/server'
 import dotenv from 'dotenv'
 import path from 'path'
 dotenv.config({path:path.join(__dirname,'../.env')})
-server.getInstance<server>().launch()
+getServer().launch()
