@@ -2,11 +2,16 @@ export class AppError extends Error {
   public code: number
   public error: Error | undefined
 
-  constructor(code: number, message: string, error?: Error) {
+  constructor(code: number|string, message?: string, error?: Error) {
     super(message)
 
-    this.code = code
-    this.error = error
+    if(typeof code === 'number'){
+      this.code = code
+      this.message = message!
+    }else{
+      this.code = 400
+      this.message = code
+    }
   }
 
   public toModel() {

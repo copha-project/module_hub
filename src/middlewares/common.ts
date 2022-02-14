@@ -36,7 +36,7 @@ export async function catchError(ctx: Context, next: Callback){
       ctx.body = err.message
       ctx.status = err.code
     } else {
-      ctx.body = new AppError(10000, (err as Error)?.message || 'Internal Error Server').toModel()
+      ctx.body = (err as Error)?.message || 'Internal Error Server'
       ctx.status = 500
     }
   }

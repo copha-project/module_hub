@@ -41,6 +41,10 @@ export default class Repository extends Base {
         return item
     }
 
+    async findArrBy<T>(value: string, key: string): Promise<T[]> {
+        return this.currentDoc.filter(e => e[key] === value)
+    }
+
     async findBy<T>(value: string, key: string): Promise<T> {
         const item = this.currentDoc.find(e => e[key] === value)
         if (!item) throw this.errors.itemNotFound
@@ -67,11 +71,11 @@ export default class Repository extends Base {
         if (itemIndex === -1) throw this.errors.itemNotFound
 
         const cloneDb: any[] = Object.assign([], this.currentDoc)
-        const cloneItem = cloneDb[itemIndex]
-
+        cloneDb[itemIndex] = item
+        
         await this.sync(cloneDb, `update item: ${item[itemKey]}`)
         this.setCurrentDoc(cloneDb)
-        return cloneItem
+        return item
     }
 
     async delete(id: string): Promise<void> {
