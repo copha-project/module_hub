@@ -1,22 +1,25 @@
 import Joi from 'joi'
 
+const stringRule = Joi.string().trim()
+const urlRule = Joi.string().trim().regex(/^\//)
+
 export const createPackageHost = Joi.object({
-    protocol: Joi.string().trim().required(),
-    host: Joi.string().trim().required(),
+    protocol: stringRule.required(),
+    host: stringRule.required(),
     port: Joi.number().required(),
     api: Joi.object({
-        upload: Joi.string().trim().required(),
-        package: Joi.string().trim().required()
+        upload: urlRule,
+        package: urlRule
     }).required()
 })
 
 export const updatePackageHost = Joi.object({
-    id: Joi.string().trim().required(),
-    protocol: Joi.string().trim(),
-    host: Joi.string().trim(),
+    id: stringRule.required(),
+    protocol: stringRule,
+    host: stringRule,
     port: Joi.number(),
     api: Joi.object({
-        upload: Joi.string().trim(),
-        package: Joi.string().trim()
+        upload: urlRule,
+        package: urlRule
     })
 })

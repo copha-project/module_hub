@@ -1,13 +1,14 @@
 import { Context } from 'koa'
 import Controller from '../../class/controller'
 import { getManager } from './manager'
-import { PackageHost } from './model'
+import { PackageHost, PackageHostModel } from './model'
 
 export class PackageHostController extends Controller {
   private manager = getManager()
   
   public async get(ctx: Context) {
-    ctx.body = await this.manager.findById(ctx.params.id)
+    const item = await this.manager.findById<PackageHost>(ctx.params.id)
+    ctx.body = new PackageHostModel(item)
   }
 
   public async getAll(ctx: Context){
@@ -21,8 +22,7 @@ export class PackageHostController extends Controller {
 
   public async update(ctx: Context){
     const hostItem: PackageHost = ctx.request.body
-    const queryItem = await this.manager.findById(hostItem.id)
-    ctx.body = await this.manager.update(queryItem, hostItem)
+    ctx.body = await this.manager.update(hostItem)
   }
 
   public async delete(ctx: Context){

@@ -12,14 +12,6 @@ export class Manager extends BaseManager {
         return this.repo.init()
     }
 
-    public async findByName(name: string): Promise<PackageHost> {
-        return this.db.findByName!(name)
-    }
-
-    public async findById(id: string): Promise<PackageHost> {
-        return this.db.findById(id)
-    }
-
     public async create(host: PackageHost): Promise<PackageHost> {
         const queryList = await this.db.findArrBy(host.host,'host')
         if(queryList.length > 0) throw new AppError("the host is existed!")
@@ -29,7 +21,8 @@ export class Manager extends BaseManager {
         return host
     }
 
-    public async update(host: PackageHost, updateHost: PackageHost): Promise<PackageHost> {
+    public async update(updateHost: PackageHost): Promise<PackageHost> {
+        const host = await this.db.findById<PackageHost>(updateHost.id)
         if(updateHost.protocol && updateHost.protocol !== host.protocol) host.protocol = updateHost.protocol
         if(updateHost.host && updateHost.host !== host.host) host.host = updateHost.host
         if(updateHost.port && updateHost.port !== host.port) host.port = updateHost.port
@@ -40,11 +33,8 @@ export class Manager extends BaseManager {
     }
 
     public async delete(id: string): Promise<void> {
-        return this.db.delete(id)
-    }
-
-    public async all() {
-        return this.db.all<PackageHost>()
+        const host = await this.db.findById<PackageHost>(id)
+        return this.db.delete(host.id)
     }
 
     private buildUrl(options: PackageHost){

@@ -20,6 +20,7 @@ export function getRoutes() {
 
   router.delete(
     '/:id',
+    adminAuthorization(),
     controller.getMethod('delete')
   )
 
