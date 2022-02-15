@@ -41,8 +41,8 @@ export default class Repository extends Base {
         return item
     }
 
-    async findArrBy<T>(value: string, key: string): Promise<T[]> {
-        return this.currentDoc.filter(e => e[key] === value)
+    async findArrBy<T>(value: string, key?: string): Promise<T[]> {
+        return this.currentDoc.filter(e => e[key||'id'] === value)
     }
 
     async findBy<T>(value: string, key: string): Promise<T> {
