@@ -1,43 +1,35 @@
-import bodyParser from 'koa-bodyparser'
+import bodyParser from 'koa-body'
 import Router from '@koa/router'
-import { ModuleController } from './controller'
+import { getModuleController } from './controller'
 import { validate, moduleAuthorization, adminAuthorization } from '../../middlewares'
-import { createModule, createModulePackage, updateId, updateModule } from './validators'
+import { createModule, createModulePackage, updateModule } from './validators'
 
 export function getRoutes() {
   const router = new Router({ prefix: '/modules' })
-  const controller = ModuleController.getInstance<ModuleController>()
-
-  router.get(
-    '/:id',
-    controller.getMethod('get')
-  )
-
-  router.put(
-    '/:name/id',
-    adminAuthorization(),
-    bodyParser(),
-    validate(updateId),
-    controller.getMethod('resetId')
-  )
+  const controller = getModuleController()
 
   router.get(
     '/',
     controller.getMethod('getAll')
   )
 
+  router.get(
+    '/:id',
+    controller.getMethod('get')
+  )
+
   router.post(
     '/',
-    adminAuthorization(),
     bodyParser(),
+    adminAuthorization(),
     validate(createModule),
     controller.getMethod('create')
   )
 
   router.put(
-    '/:name',
-    moduleAuthorization(),
+    '/:id',
     bodyParser(),
+    moduleAuthorization(),
     validate(updateModule),
     controller.getMethod('update')
   )
@@ -47,14 +39,20 @@ export function getRoutes() {
     adminAuthorization(),
     controller.getMethod('delete')
   )
+  
+  // package api
+  router.get(
+    "/:id/packages/:ver",
+    controller.getMethod("getPackage")
+  )
 
   router.get(
-    "/:name/packages",
+    "/:id/packages",
     controller.getMethod("getAllPackage")
   )
   
   router.post(
-    "/:name/packages",
+    "/:id/packages",
     moduleAuthorization(),
     bodyParser(),
     validate(createModulePackage),
@@ -62,10 +60,10 @@ export function getRoutes() {
   )
 
   router.delete(
-    "/:name/packages/:ver",
+    "/:id/packages/:ver",
     moduleAuthorization(),
     controller.getMethod("deletePackage")
   )
-  
+
   return router.routes()
 }

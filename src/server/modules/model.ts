@@ -1,12 +1,3 @@
-export interface AddModule {
-    id?: string
-    name: string
-    desc: string
-    type: string
-    repository: string
-    packages?: packageItem[]
-}
-
 export interface AddPackage extends packageItem {}
 
 export interface UpdateModule {
@@ -35,7 +26,6 @@ export interface Module {
 
 interface packageItem {
     version: string
-    link: string
     md5: string
     sha1: string
 }
@@ -47,17 +37,20 @@ export class ModuleModel {
     public repository: string
     public packages?: packageItem[]
     public packageHost?: string
+    public vers: number
 
-    constructor(module: Module, fullInfo: boolean = false) {
+    constructor(module: Module) {
         this.id = module.id
         this.name = module.name
         this.desc = module.desc
         this.type = module.type
         this.repository = module.repository
         this.packageHost = module.packageHost
-        
-        if(fullInfo){
-            this.packages = module.packages
-        }
+        this.vers = module.packages?.length || 0
+    }
+
+    static createFullModule(module: Module){
+        const moduleItem = new ModuleModel(module)
+        moduleItem.packages = module.packages
     }
 }
