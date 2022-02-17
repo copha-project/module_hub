@@ -9,7 +9,7 @@ const RepoMeta = {
 export default class RemoteRepository extends Repository{
     private docNames = ['modules','packageHosts']
     private shas:{[key:string]:string} = {}
-    private lastCommit: {sha:string} = {sha:""}
+    private lastCommit: {sha:string, commit: {message: string}} = {sha:"", commit: {message: ''}}
     private githubAPI = new Octokit({auth: this.config.appConfig.key.GithubToken})
 
     async init(){
@@ -74,6 +74,10 @@ export default class RemoteRepository extends Repository{
 
     get lastCommitHash(){
         return this.lastCommit.sha.slice(0,7)
+    }
+
+    get lastCommitMessage(){
+        return this.lastCommit.commit.message
     }
 }
 

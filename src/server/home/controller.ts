@@ -19,10 +19,11 @@ export class HomeController extends Controller {
 
   public async status(ctx: Context) {    
     ctx.body = {
-      name: "copha modules hub service",
+      name: "Copha Modules hub service",
       version: (await Utils.readJson(path.join(__dirname,'../../../package.json'))).version,
       isPackageHub: this.config.isPackageHub,
       lastCommitHash: (await getRemoteRepository().getLastCommit()).sha,
+      lastCommitMessage: getRemoteRepository().lastCommitMessage,
       ... getEnvInfo()
     }
   }
@@ -46,19 +47,22 @@ export class HomeController extends Controller {
   }
 
   public async genToken(ctx: Context){
-    const moduleIdHex = Buffer.from(require('crypto').randomUUID()).toString('hex')
+    const moduleId = this.authManager.newUUID()
     ctx.body = {
-      moduleId: Buffer.from(moduleIdHex,'hex').toString(),
-      token: `${moduleIdHex}:${Utils.hash.sha1(this.config.keyConfig.AppKey+moduleIdHex+this.config.keyConfig.AppSecret)}`
+      moduleId: moduleId,
+      token: this.authManager.newToken(moduleId)
     }
   }
   
   public async revealToken(ctx: Context){
-    const id = Buffer.from(ctx.request.body.id).toString('hex')
     ctx.body = {
       moduleId: ctx.request.body.id,
-      token: `${id}:${Utils.hash.sha1(this.config.keyConfig.AppKey+id+this.config.keyConfig.AppSecret)}`
+      token: this.authManager.newToken(ctx.request.body.id)
     }
+  }
+
+  public async resetId(ctx: Context){
+    // await this.manager.resetId(ctx.params.name, ctx.request.body.id)
   }
   
   //upload package
@@ -72,3 +76,5 @@ export class HomeController extends Controller {
     ctx.status = 200
   }
 }
+
+export const getController = () => HomeController.getInstance<HomeController>()
