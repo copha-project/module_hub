@@ -1,17 +1,16 @@
 import { Context } from 'koa'
 import { PermissionError } from '../class/error';
 import { Middleware } from '@koa/router'
-import Utils from 'uni-utils'
+import { getAuthController } from '../class/auth';
 
 export function moduleAuthorization(): Middleware {
   return async (ctx: Context, next: Callback) => {
-    const tokenCode = ctx.headers.authorization || ctx.request.body.authorization
-    if(!tokenCode) throw new PermissionError()  
-    const [moduleIdHex, token] = tokenCode?.split(':')
-    if(!moduleIdHex || !token || Utils.hash.sha1(ctx.appConfig.key.AppKey + moduleIdHex + ctx.appConfig.key.AppSecret) !== token){
+    const token = ctx.headers.authorization || ctx.request.body.authorization
+    const moduleId = ctx.params.id
+    if(!token || !moduleId || !getAuthController().verifyToken(moduleId, token)){
       throw new PermissionError()
     }
-    ctx.state.moduleId = Buffer.from(moduleIdHex,'hex').toString()
+    ctx.state.moduleId = moduleId
     await next()
   }
 }
