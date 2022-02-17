@@ -52,5 +52,6 @@ export class ModuleModel {
     static createFullModule(module: Module){
         const moduleItem = new ModuleModel(module)
         moduleItem.packages = module.packages
+        return moduleItem
     }
 }
