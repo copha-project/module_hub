@@ -6,6 +6,7 @@ import { getEnvInfo } from '../../common'
 import { exec } from 'child_process'
 import { promisify } from 'util'
 import { getRemoteRepository } from '../../repository/remote'
+import { getModuleManager } from '../modules/manager'
 const execPromise = promisify(exec)
 
 export class HomeController extends Controller {
@@ -62,7 +63,7 @@ export class HomeController extends Controller {
   }
 
   public async resetId(ctx: Context){
-    // await this.manager.resetId(ctx.params.name, ctx.request.body.id)
+    ctx.body = await getModuleManager().resetId(ctx.request.body.id,ctx.request.body.replace_id)
   }
   
   //upload package

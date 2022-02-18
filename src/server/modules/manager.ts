@@ -65,6 +65,13 @@ export class ModuleManager extends Manager {
         module.packages = module.packages?.filter(e=>e.version !== version)
         await this.db.update(module)
     }
+
+    public async resetId(id: string, replace_id: string){
+        if(id === replace_id) throw new AppError("id not change")
+        let module = await this.findById<Module>(id)
+        module.id = replace_id
+        await this.repo.update(module, 'name')
+    }
 }
 
 export const getManager = () => ModuleManager.getInstance<ModuleManager>()

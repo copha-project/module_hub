@@ -18,12 +18,6 @@ export function getRoutes() {
     controller.getMethod('status')
   )
 
-  router.post(
-    '/deploy',
-    bodyParser(),
-    controller.getMethod('deploy')
-  )
-
   router.get(
     '/token',
     adminAuthorization(),
@@ -38,8 +32,14 @@ export function getRoutes() {
     controller.getMethod('revealToken')
   )
   
-  router.put(
-    '/:id/id',
+  router.post(
+    '/deploy',
+    bodyParser(),
+    controller.getMethod('deploy')
+  )
+
+  router.post(
+    '/reset_module_id',
     adminAuthorization(),
     bodyParser(),
     validate(updateId),

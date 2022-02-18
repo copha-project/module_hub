@@ -16,8 +16,11 @@ const tokenApi = `${ApiHost}/token`
 describe("0. Common API Test", function(){
   it("get token with module id", async () => {
       const res = await getToken("12810f50-9089-11ec-b8d8-c30a6442a316")
-      assert.equal(res.status, 200, res.statusText)
-      moduleToken = res.data.token
+      assert.equal(res.data.code, 200, res.statusText)
+  })
+  it("get new moduleId and token", async () => {
+    const res = await newToken()
+    assert.equal(res.data.code, 200, res.statusText)
   })
 })
 
@@ -66,7 +69,6 @@ describe("1. Package Host API Test", function(){
 describe("2. Module API Test", function () {
   let moduleId = "null"
   let moduleToken = "null"
-
   let modules = []
 
   describe("#GET /modules", function () {
@@ -105,7 +107,7 @@ describe("2. Module API Test", function () {
 
     after(async function(){
       const res = await getToken(moduleId)
-      moduleToken = res.data.token
+      moduleToken = res.data.data.token
     })
   });
 
@@ -162,7 +164,6 @@ describe("2. Module API Test", function () {
 });
 
 describe("3. Package API Test", function(){
-  const moduleApi = `${ApiPoint}/modules`;
   let moduleId = 'null'
   let moduleToken = 'null'
 
@@ -170,7 +171,7 @@ describe("3. Package API Test", function(){
     const res = await addModule()
     moduleId = res.data.data.id
     const tokenRes = await getToken(moduleId)
-    moduleToken = tokenRes.data.token
+    moduleToken = tokenRes.data.data.token
   })
 
   describe("#POST /packages", function () {
@@ -248,6 +249,17 @@ async function addModule(){
       type: 'type test',
       repository: 'repo test'
     },
+    {
+      headers: {
+        authorization: adminToken,
+      },
+    }
+  )
+}
+
+async function newToken(){
+  return axios.default.get(
+    tokenApi,
     {
       headers: {
         authorization: adminToken,
