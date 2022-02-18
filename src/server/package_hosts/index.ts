@@ -33,7 +33,7 @@ export function getRoutes() {
   )
 
   router.put(
-    '/',
+    '/:id',
     adminAuthorization(),
     bodyParser(),
     validate(updatePackageHost),

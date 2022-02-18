@@ -22,6 +22,7 @@ export class PackageHostController extends Controller {
 
   public async update(ctx: Context){
     const hostItem: PackageHost = ctx.request.body
+    hostItem.id = ctx.params.id
     ctx.body = await this.manager.update(hostItem)
   }
 

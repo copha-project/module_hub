@@ -14,7 +14,6 @@ export const createPackageHost = Joi.object({
 })
 
 export const updatePackageHost = Joi.object({
-    id: stringRule.required(),
     protocol: stringRule,
     host: stringRule,
     port: Joi.number(),
