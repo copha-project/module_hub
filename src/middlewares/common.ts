@@ -10,7 +10,7 @@ export async function reqLog(ctx: Context, next: Callback) {
 
 export async function reply(ctx: Context, next: Callback) {
   await next()
-  if(!ctx._matchedRoute?.startsWith('/api/')) return
+  if(ctx._matchedRoute === '/') return
   if(ctx.status.toString() !== '200'){
     ctx.body = {
       code: ctx.status,
