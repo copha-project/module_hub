@@ -48,7 +48,8 @@ Copha 内部模块注册，下载中心
   获取模块信息
 
 - PUT /modules/id
-更新模块信息
+
+  更新模块信息
 
 #### Package API
 
