@@ -1,6 +1,7 @@
 import path from 'path'
 import Base from "./base"
 import Koa from 'koa'
+import favicon from 'koa-favicon'
 import Cors from '@koa/cors'
 import Compose from 'koa-compose'
 import Utils from 'uni-utils'
@@ -22,6 +23,7 @@ export default class Server extends Base {
     async init(){
         await this.checkServerFile()
         this.app
+        .use(favicon(this.config.faviconPath))
         .use(Compose([reqLog, reply, catchError]))
         .use(Cors())
 
@@ -49,6 +51,14 @@ export default class Server extends Base {
         if(! await Utils.checkFile(this.config.packageStoragePath)){
             await Utils.createDir(this.config.packageStoragePath)
         }
+        // create favicon
+        if(! await Utils.checkFile(this.config.faviconPath)){
+            await Utils.download('https://copha.net/favicon.ico',{
+                savePath: this.config.faviconPath,
+                decoding: ''
+            })
+        }
+
         if(this.dataSource.isLocal){
             for (const doc of this.config.dbConfig.Doc) {
                 const docFile = path.join(this.config.publicPath,`${doc}.json`)

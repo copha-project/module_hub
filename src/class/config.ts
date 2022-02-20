@@ -19,6 +19,10 @@ export default class Config{
         return process.env.PACKAGE_HUB !== undefined
     }
 
+    get faviconPath(){
+        return path.join(this.publicPath,'favicon.ico')
+    }
+
     get publicPath(){
         return process.env.APP_PUBLIC_PATH || path.join(this.appRootPath,'./public')
     }
