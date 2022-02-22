@@ -2,7 +2,8 @@ import bodyParser from 'koa-body'
 import Router from '@koa/router'
 import { getController } from './controller'
 import { adminAuthorization, moduleAuthorization, validate } from '../../middlewares'
-import { revealToken, updateId } from './validators'
+import { revealToken, updateId, upload } from './validators'
+import { getConfig } from '../../class/config'
 
 export function getRoutes() {
   const router = new Router()
@@ -46,11 +47,12 @@ export function getRoutes() {
     controller.getMethod('resetId')
   )
 
-  if(controller.config.isPackageHub){
+  if(getConfig().isPackageHub){
     router.post(
       '/upload/:id',
-      bodyParser({multipart: true}),
       moduleAuthorization(),
+      bodyParser({multipart: true}),
+      validate(upload),
       controller.getMethod('upload')
     )
   }
