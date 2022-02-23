@@ -1,6 +1,6 @@
 import BaseManager from "../../class/manager"
 import { getRepository } from "../../repository"
-import { AppError, NotFoundError } from "../../class/error"
+import { AppError } from "../../class/error"
 import { PackageHost } from "./model"
 import { randomUUID } from 'crypto'
 export class Manager extends BaseManager {

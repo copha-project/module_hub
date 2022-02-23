@@ -1,5 +1,5 @@
 import { randomUUID } from 'crypto'
-import { Module, AddPackage, UpdateModule } from "./model"
+import { Module, AddPackage } from "./model"
 import Manager from "../../class/manager"
 import { getRepository } from "../../repository"
 import { AppError, NotFoundError, DataRepeatError } from "../../class/error"
