@@ -19,6 +19,10 @@ export default class Config{
         return process.env.PACKAGE_HUB !== undefined
     }
 
+    get deployKey(){
+        return process.env.DEPLOY_KEY || Math.random().toString(16)
+    }
+    
     get faviconPath(){
         return path.join(this.publicPath,'favicon.ico')
     }

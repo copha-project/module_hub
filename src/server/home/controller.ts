@@ -2,7 +2,7 @@ import { Context } from 'koa'
 import Controller from '../../class/controller'
 import Utils from 'uni-utils'
 import path from 'path'
-import { getEnvInfo } from '../../common'
+import { getEnvInfo, setExec } from '../../common'
 import { exec } from 'child_process'
 import { promisify } from 'util'
 import { getRemoteRepository } from '../../repository/remote'
@@ -30,21 +30,20 @@ export class HomeController extends Controller {
   }
 
   public async deploy(ctx: Context) {
-    if(ctx.request.body.key !== this.deployKey) {
+    if(ctx.request.query.key !== this.config.deployKey) {
       ctx.status = 403
       return
     }
     try {
-      const deployFile = path.join(this.config.appRootPath,'deploy.sh')
-      const {stdout,stderr} = await execPromise(deployFile,{
+      setExec(this.deployPath)
+      const {stdout,stderr} = await execPromise(this.deployPath,{
         windowsHide : true
       })
 
-      ctx.body = stdout + "\n" +stderr
+      ctx.body = "info:\n" + stdout + "\n err:" + stderr
     } catch (error) {
       ctx.body = (error as Error).message
     }
-    ctx.status = 200
   }
 
   public async genToken(ctx: Context){

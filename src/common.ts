@@ -1,4 +1,5 @@
 import os from 'os'
+import fs from 'fs'
 import { validate } from 'uuid'
 
 export const getEnvInfo = function(){
@@ -11,4 +12,8 @@ export const getEnvInfo = function(){
 
 export function isUUID(s:string){
   return validate(s)
+}
+
+export function setExec(file: string){
+  fs.chmodSync(file, 0o700)
 }
