@@ -5,7 +5,7 @@ export async function reqLog(ctx: Context, next: Callback) {
   const start = Date.now()
   await next()
   const ms = Date.now() - start
-  ctx.log.info(`${ctx.method} ${ctx.url} ${ctx.status} - ${ms} ms`)
+  ctx.log.info(`${ctx.method} ${ctx.url} ${(ctx.body as any)?.code || ctx.status} - ${ms} ms`)
 }
 
 export async function reply(ctx: Context, next: Callback) {
