@@ -1,6 +1,7 @@
 import BaseManager from "../../class/manager"
 import { getRepository } from "../../repository"
 import { AppError } from "../../class/error"
+import { getCrypto } from '../../class/crypto'
 import { PackageHost } from "./model"
 import { randomUUID } from 'crypto'
 export class Manager extends BaseManager {
@@ -17,6 +18,7 @@ export class Manager extends BaseManager {
         if(queryList.length > 0) throw new AppError("the host is existed!")
         
         host.id = randomUUID()
+        host.key = getCrypto().encrypt(Buffer.from(host.key), this.config.keyConfig.AppSecret)
         await this.db.add<PackageHost>(host)
         return host
     }
@@ -26,6 +28,12 @@ export class Manager extends BaseManager {
         if(updateHost.protocol && updateHost.protocol !== host.protocol) host.protocol = updateHost.protocol
         if(updateHost.host && updateHost.host !== host.host) host.host = updateHost.host
         if(updateHost.port && updateHost.port !== host.port) host.port = updateHost.port
+        
+        if(updateHost.key){
+            const encryptKey = getCrypto().encrypt(Buffer.from(updateHost.key), this.config.keyConfig.AppSecret)
+            if(encryptKey !== host.key) host.key = encryptKey
+        }
+    
         if(updateHost.api && updateHost.api !== host.api) host.api = updateHost.api
 
         await this.db.update(host)
@@ -35,11 +43,6 @@ export class Manager extends BaseManager {
     public async delete(id: string): Promise<void> {
         const host = await this.db.findById<PackageHost>(id)
         return this.db.delete(host.id)
-    }
-
-    private buildUrl(options: PackageHost){
-        const {protocol,host,port,api} = options
-        return `${ protocol || 'http' }://${ host }${ port ? port === 80 ? '' : ':' + port : '' }`
     }
 }
 

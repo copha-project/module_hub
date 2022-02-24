@@ -4,6 +4,7 @@ export interface PackageHost {
     protocol: string
     host: string
     port: number
+    key: string
     api: {
         upload: string
         package: string
@@ -15,6 +16,7 @@ export class PackageHostModel {
     public protocol: string
     public host: string
     public port: number
+    public key: string
     public api: {
         upload: string
         package: string
@@ -31,6 +33,8 @@ export class PackageHostModel {
 
         this.uploadPoint = this.buildUrl(host.api.upload)
         this.fetchPoint = this.buildUrl(host.api.package)
+
+        this.key = host.key
     }
     
     private buildUrl(apiPoint: string){

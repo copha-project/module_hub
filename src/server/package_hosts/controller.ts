@@ -12,7 +12,8 @@ export class PackageHostController extends Controller {
   }
 
   public async getAll(ctx: Context){
-    ctx.body = await this.manager.all()
+    const hosts = await this.manager.all<PackageHost>()
+    ctx.body = hosts
   }
 
   public async create(ctx: Context){
