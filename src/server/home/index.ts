@@ -32,12 +32,6 @@ export function getRoutes() {
     validate(revealToken),
     controller.getMethod('revealToken')
   )
-  
-  router.post(
-    '/deploy',
-    bodyParser(),
-    controller.getMethod('deploy')
-  )
 
   router.post(
     '/reset_module_id',

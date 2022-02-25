@@ -18,10 +18,6 @@ export default class Config{
     get isPackageHub(){
         return process.env.PACKAGE_HUB !== undefined
     }
-
-    get deployKey(){
-        return process.env.DEPLOY_KEY || Math.random().toString(16)
-    }
     
     get faviconPath(){
         return path.join(this.publicPath,'favicon.ico')
@@ -43,7 +39,7 @@ export default class Config{
     }
 
     get appRootPath(){
-        return path.join(__dirname,'../')
+        return path.join(__dirname,'../../')
     }
 
     get dbConfig(){

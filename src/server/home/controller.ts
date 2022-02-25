@@ -29,23 +29,6 @@ export class HomeController extends Controller {
     }
   }
 
-  public async deploy(ctx: Context) {
-    if(ctx.request.query.key !== this.config.deployKey) {
-      ctx.status = 403
-      return
-    }
-    try {
-      setExec(this.deployPath)
-      const {stdout,stderr} = await execPromise(this.deployPath,{
-        windowsHide : true
-      })
-
-      ctx.body = "info:\n" + stdout + "\n err:" + stderr
-    } catch (error) {
-      ctx.body = (error as Error).message
-    }
-  }
-
   public async genToken(ctx: Context){
     const moduleId = this.authManager.newUUID()
     ctx.body = {

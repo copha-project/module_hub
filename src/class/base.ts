@@ -12,10 +12,7 @@ export default class Base {
         }
         return this.instance as T
     }
-    get deployPath(){
-        return path.join(this.config.appRootPath,'../deploy.sh')
-    }
-
+    
     get dataSource(){
         return {
             isLocal: this.config.dbConfig.RepositorySource.toLocaleLowerCase() === 'local',

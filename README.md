@@ -22,9 +22,7 @@ Copha 内部模块注册，下载服务源码
 - APP_DB_SOURCE
 
     数据库来源,可以使用的值：local 和 remote
-- DEPLOY_KEY
 
-    用于自动部署需要的凭证
 - PACKAGE_HUB
 
     设置值为 1 将以包存储服务模式启动，默认启动模式为 API 模式
