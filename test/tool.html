@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .main{
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .main textarea,
+        .main button {
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+<div class="main">
+    <textarea id="pem" id="" cols="80" rows="20" placeholder="pem text"></textarea>
+    <textarea id="hex" id="" cols="80" rows="20" placeholder="hex text"></textarea>
+    <button id="convert" type="button">convert</button>
+</div>
+<script>
+var findElement = function(selector){
+    return document.querySelector(selector)
+}
+
+function convert(){
+    var pemNode = findElement('#pem')
+    var hexNode = findElement('#hex')
+    if(pemNode.value){
+        // pemNode.value.replace(/\n/g,'#').replace(/\s/g,'##')
+        hexNode.value = btoa(pemNode.value)
+    }
+    if(hexNode.value){
+        pemNode.value = atob(hexNode.value)
+    }
+}
+
+findElement('#convert').addEventListener('click',convert)
+</script>
+</body>
+</html>

@@ -12,4 +12,4 @@ yarn-error.log
 /docs/Gemfile.lock
 !.gitkeep
 /.env
-/src/public
+/public
