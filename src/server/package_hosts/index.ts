@@ -18,6 +18,12 @@ export function getRoutes() {
     controller.getMethod('get')
   )
 
+  router.get(
+    '/:id/key',
+    adminAuthorization(),
+    controller.getMethod('showKey')
+  )
+
   router.delete(
     '/:id',
     adminAuthorization(),
