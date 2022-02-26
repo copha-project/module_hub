@@ -56,6 +56,14 @@ Copha 内部模块注册，下载服务源码
 
   > 上传模块包无需手动指定 package host，通常在模块信息里已经指定了该模块对应使用的 package host
 
+- GET /package_hosts/id
+
+  节点详情数据
+  
+ - GET /package_hosts/id/key
+
+  获取节点 key
+
 ### Package API
 - GET /modules/id/packages
 
