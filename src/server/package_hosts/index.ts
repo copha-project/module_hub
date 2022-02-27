@@ -19,9 +19,9 @@ export function getRoutes() {
   )
 
   router.get(
-    '/:id/key',
+    '/:id/secret',
     adminAuthorization(),
-    controller.getMethod('showKey')
+    controller.getMethod('showSecret')
   )
 
   router.delete(

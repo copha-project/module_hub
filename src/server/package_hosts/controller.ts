@@ -15,7 +15,7 @@ export class PackageHostController extends Controller {
 
   public async getAll(ctx: Context){
     const hosts = await this.manager.all<PackageHost>()
-    ctx.body = hosts
+    ctx.body = hosts.map(e => new PackageHostModel(e))
   }
 
   public async create(ctx: Context){
@@ -33,8 +33,9 @@ export class PackageHostController extends Controller {
     ctx.body = await this.manager.delete(ctx.params.id)
   }
 
-  public async showKey(ctx: Context){
+  public async showSecret(ctx: Context){
     const host = await this.manager.findById<PackageHost>(ctx.params.id)
-    ctx.body = Utils.btoa(getCrypto().decrypt(host.key, this.config.keyConfig.AppSecret).toString())
+    host.secret!.key = Utils.btoa(getCrypto().decrypt(host.secret!.key, this.config.keyConfig.AppSecret).toString())
+    ctx.body = host
   }
 } 

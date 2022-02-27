@@ -7,7 +7,12 @@ export const createPackageHost = Joi.object({
     protocol: stringRule.required(),
     host: stringRule.required(),
     port: Joi.number().required(),
-    key: stringRule.required(),
+    secret: Joi.object({
+        user: stringRule,
+        port: Joi.number(),
+        path: stringRule.required(),
+        key: stringRule.required()
+    }).required(),
     api: Joi.object({
         upload: urlRule,
         package: urlRule
@@ -18,7 +23,12 @@ export const updatePackageHost = Joi.object({
     protocol: stringRule,
     host: stringRule,
     port: Joi.number(),
-    key: stringRule,
+    secret: {
+        user: stringRule,
+        port: Joi.number(),
+        path: stringRule,
+        key: stringRule
+    },
     api: Joi.object({
         upload: urlRule,
         package: urlRule
