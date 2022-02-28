@@ -33,6 +33,10 @@ export class Manager extends BaseManager {
             const encryptKey = getCrypto().encrypt(Buffer.from(updateHost.secret.key), this.config.keyConfig.AppSecret)
             if(encryptKey !== host.secret.key) host.secret.key = encryptKey
         }
+        
+        if(updateHost.secret.path && updateHost.secret.path !== host.secret.path){
+            host.secret.path = updateHost.secret.path
+        }
     
         if(updateHost.api && updateHost.api !== host.api) host.api = updateHost.api
 
