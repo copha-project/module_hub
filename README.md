@@ -56,13 +56,21 @@ Copha 内部模块注册，下载服务源码
 
   > 上传模块包无需手动指定 package host，通常在模块信息里已经指定了该模块对应使用的 package host
 
-- GET /package_hosts/id
+- POST /package_hosts
 
-  节点详情数据
+  创建新节点
+
+- PUT /package_hosts/id
+
+  修改节点数据
+
+- DELETE /package_hosts/id
+
+  删除节点
   
- - GET /package_hosts/id/key
+- GET /package_hosts/id/secret
 
-  获取节点 key
+  获取节点特殊数据
 
 ### Package API
 - GET /modules/id/packages
