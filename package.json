@@ -1,11 +1,12 @@
 {
   "name": "module-hub",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "a server of copha module hub",
   "main": "index.js",
   "scripts": {
     "start": "node ./dist/index.js",
     "start-hub": "cross-env PACKAGE_HUB=1 node ./dist/index.js",
+    "deploy-package-hub": "node ./bin/deploy.js",
     "build": "gulp",
     "dev": "nodemon -w src -e ts --verbose --exec ./node_modules/.bin/ts-node --files ./src/index.ts",
     "test": "mocha test/*.test.js"
@@ -21,6 +22,7 @@
   "author": "aong",
   "license": "MIT",
   "devDependencies": {
+    "@actions/core": "^1.6.0",
     "@types/koa-bodyparser": "^4.3.4",
     "@types/koa__cors": "^3.1.1",
     "@types/koa__router": "^8.0.11",

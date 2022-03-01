@@ -5,13 +5,18 @@ on:
     branches: [ main ]
 
 jobs:
-  build:
+  PACKAGE_HOST_CD:
 
     runs-on: ubuntu-latest
 
     steps:
       - uses: actions/checkout@v2
       - uses: actions/setup-node@v2 # This is the action
+        with:
+            node-version: 16.x
       - run: yarn
       - run: npm run build
-      - run: node ./bin/deploy.js
+      - run: npm run deploy-package-hub
+        env:
+          MODULE_HUB_APP_SECRET: ${{ secrets.MODULE_HUB_APP_SECRET }}
+
