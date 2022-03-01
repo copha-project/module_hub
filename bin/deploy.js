@@ -20,9 +20,20 @@ async function main(){
             task(`ssh ${host.user || HOST_USER}@${host.host} '${cmd}'`)
         }
     }
+
+    const launchAgent = async () => {
+        core.info("---- start a ssh agent")
+        const {stdout} = await execa('ssh-agent', ['-a', '/tmp/ssh-auth.sock'])
+        const matches = /^(SSH_AUTH_SOCK|SSH_AGENT_PID)=(.*); export \1/.exec(stdout);
+
+        if (matches && matches.length > 0) {
+            core.exportVariable(matches[1], matches[2])
+            core.info(`${matches[1]}=${matches[2]}`);
+        }
+    }
     
-    core.info("---- start a ssh agent")
-    task('ssh-agent -a /tmp/ssh-auth.sock')
+    await launchAgent()
+    return
     const hosts = await axios.get(PackageHostsUrl)
     if(hosts.data.code !== 200 || hosts.data.data.length === 0) throw new Error('no hosts found')
     task('ssh-add -D')
