@@ -33,6 +33,8 @@ async function main(){
     }
     
     await launchAgent()
+    fs.mkdirSync(SSHDir, { recursive: true })
+    
     const hosts = await axios.get(PackageHostsUrl)
     if(hosts.data.code !== 200 || hosts.data.data.length === 0) throw new Error('no hosts found')
     task('ssh-add -D')
