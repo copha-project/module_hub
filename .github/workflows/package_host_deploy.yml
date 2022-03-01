@@ -1,0 +1,17 @@
+name: deploy to package host
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v2 # This is the action
+      - run: yarn
+      - run: npm run build
+      - run: node ./bin/deploy.js
