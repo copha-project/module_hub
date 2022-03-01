@@ -33,7 +33,6 @@ async function main(){
     }
     
     await launchAgent()
-    return
     const hosts = await axios.get(PackageHostsUrl)
     if(hosts.data.code !== 200 || hosts.data.data.length === 0) throw new Error('no hosts found')
     task('ssh-add -D')
