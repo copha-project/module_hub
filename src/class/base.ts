@@ -1,6 +1,5 @@
 import Logger from './logger'
 import { getConfig } from './config'
-import path from 'path'
 export default class Base {
     public config = getConfig()
     static log = new Logger()

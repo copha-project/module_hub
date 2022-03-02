@@ -3,12 +3,8 @@ import Controller from '../../class/controller'
 import Utils from 'uni-utils'
 import path from 'path'
 import { getEnvInfo, setExec } from '../../common'
-import { exec } from 'child_process'
-import { promisify } from 'util'
 import { getRemoteRepository } from '../../repository/remote'
 import { getModuleManager } from '../modules/manager'
-const execPromise = promisify(exec)
-
 export class HomeController extends Controller {
   public async home(ctx: Context) {
     ctx.type = 'html'
