@@ -1,4 +1,5 @@
 import Base from './base'
+import { NotFoundError } from './error'
 import Repository from './repository'
 
 export default class Manager extends Base {
@@ -14,7 +15,11 @@ export default class Manager extends Base {
     }
 
     public async findById<T>(id: string): Promise<T> {
-        return this.db.findById(id)
+        try {
+            return await this.db.findById(id)
+        } catch (error: any) {
+            throw new NotFoundError(error.message)
+        }
     }
 
     public async all<T>() {
