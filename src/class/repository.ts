@@ -107,7 +107,7 @@ export default class Repository extends Base {
     }
 
     get currentDoc() {
-        return this.db[this.useDoc]
+        return this.db[this.useDoc] || []
     }
 
     protected setCurrentDoc<T>(data: T[]) {
