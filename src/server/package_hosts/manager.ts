@@ -2,7 +2,7 @@ import BaseManager from "../../class/manager"
 import { getRepository } from "../../repository"
 import { AppError } from "../../class/error"
 import { getCrypto } from '../../class/crypto'
-import { PackageHost } from "./model"
+import { PackageHost, PackageHostModel } from "./model"
 import { randomUUID } from 'crypto'
 export class Manager extends BaseManager {
     protected useDoc = 'packageHosts'
@@ -11,6 +11,11 @@ export class Manager extends BaseManager {
         this.log.info(`Load package host data from : ${this.config.dbConfig.RepositorySource}`)
         this.repo = getRepository()
         return this.repo.init()
+    }
+
+    public async getFullHost(id: string){
+        const host = await this.db.findById<PackageHost>(id)
+        return new PackageHostModel(host)
     }
 
     public async create(host: PackageHost): Promise<PackageHost> {

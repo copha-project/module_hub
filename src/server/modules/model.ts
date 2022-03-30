@@ -25,6 +25,8 @@ export interface Module {
 }
 
 interface packageItem {
+    module_id?: string
+    package_host?: string
     version: string
     md5: string
     sha1: string

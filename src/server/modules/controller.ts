@@ -1,10 +1,12 @@
 import { Context } from 'koa'
 import { getManager } from './manager'
+import { getPackageHostManager } from '../package_hosts/manager'
 import Controller from '../../class/controller'
 import { PermissionError } from '../../class/error';
 import { Module, ModuleModel, AddPackage } from './model'
 export class ModuleController extends Controller {
   private manager = getManager()
+  private packageHostManager = getPackageHostManager()
 
   public async getAll(ctx: Context) {
     const modules = await this.manager.all<Module>()
@@ -41,7 +43,13 @@ export class ModuleController extends Controller {
   }
 
   public async getPackage(ctx: Context){
-    ctx.body = await this.manager.getPackage(ctx.params.id, ctx.params.ver)
+    const packageItem = await this.manager.getPackage(ctx.params.id, ctx.params.ver)
+    const packageHost = await this.packageHostManager.getFullHost(packageItem.package_host!)
+    
+    ctx.body = {
+      ...packageItem,
+      url: packageHost.fetchPoint.replace('{id}',ctx.params.id).replace('{ver}', ctx.params.ver)
+    }
   }
 
   public async addPackage(ctx: Context) {

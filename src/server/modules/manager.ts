@@ -49,6 +49,8 @@ export class ModuleManager extends Manager {
         const module = await this.findById<Module>(moduleId)
         const packageItem = module.packages?.find(e=>e.version === ver)
         if(!packageItem) throw new NotFoundError("no package found")
+        packageItem.module_id = module.id
+        packageItem.package_host = module.packageHost
         return packageItem
     }
 

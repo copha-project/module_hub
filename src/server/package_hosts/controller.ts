@@ -9,8 +9,7 @@ export class PackageHostController extends Controller {
   private manager = getManager()
   
   public async get(ctx: Context) {
-    const item = await this.manager.findById<PackageHost>(ctx.params.id)
-    ctx.body = new PackageHostModel(item)
+    ctx.body = await this.manager.getFullHost(ctx.params.id)
   }
 
   public async getAll(ctx: Context){
