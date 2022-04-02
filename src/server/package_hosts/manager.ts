@@ -48,8 +48,12 @@ export class Manager extends BaseManager {
             }
         }
 
-        if(updateHost.api && updateHost.api !== host.api) host.api = updateHost.api
+        if(updateHost.api && JSON.stringify(updateHost.api) === JSON.stringify(host.api)) {
+            return host
+        }
 
+        host.api = updateHost.api
+        
         await this.db.update(host)
         return host
     }
