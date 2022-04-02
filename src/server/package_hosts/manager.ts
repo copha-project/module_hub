@@ -30,19 +30,24 @@ export class Manager extends BaseManager {
 
     public async update(updateHost: PackageHost): Promise<PackageHost> {
         const host = await this.db.findById<PackageHost>(updateHost.id)
+        if(!updateHost.protocol && !updateHost.host && !updateHost.port && !updateHost.secret && !updateHost.api){
+            return host
+        }
         if(updateHost.protocol && updateHost.protocol !== host.protocol) host.protocol = updateHost.protocol
         if(updateHost.host && updateHost.host !== host.host) host.host = updateHost.host
         if(updateHost.port && updateHost.port !== host.port) host.port = updateHost.port
         
-        if(updateHost.secret.key){
-            const encryptKey = getCrypto().encrypt(Buffer.from(updateHost.secret.key), this.config.keyConfig.AppSecret)
-            if(encryptKey !== host.secret.key) host.secret.key = encryptKey
+        if(updateHost.secret){
+            if(updateHost.secret.key){
+                const encryptKey = getCrypto().encrypt(Buffer.from(updateHost.secret.key), this.config.keyConfig.AppSecret)
+                if(encryptKey !== host.secret.key) host.secret.key = encryptKey
+            }
+            
+            if(updateHost.secret.path && updateHost.secret.path !== host.secret.path){
+                host.secret.path = updateHost.secret.path
+            }
         }
-        
-        if(updateHost.secret.path && updateHost.secret.path !== host.secret.path){
-            host.secret.path = updateHost.secret.path
-        }
-    
+
         if(updateHost.api && updateHost.api !== host.api) host.api = updateHost.api
 
         await this.db.update(host)
