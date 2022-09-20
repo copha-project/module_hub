@@ -1,6 +1,6 @@
 {
   "name": "module-hub",
-  "version": "0.0.4",
+  "version": "0.1.0",
   "description": "a server of copha module hub",
   "main": "index.js",
   "scripts": {

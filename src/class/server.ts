@@ -26,6 +26,7 @@ export default class Server extends Base {
         .use(favicon(this.config.faviconPath))
         .use(Compose([reqLog, reply, catchError]))
         .use(Cors())
+        console.log("env:",process.env);
 
         if(this.config.isPackageHub){
             this.log.info('Service mode: package hub')
@@ -37,7 +38,7 @@ export default class Server extends Base {
 
         this.app.use(getRoutes())
     }
-    
+
     async launch() {
         await this.init()
         this.app.listen(this.config.serverConfig.port)
