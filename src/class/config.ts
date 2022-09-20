@@ -16,9 +16,9 @@ export default class Config{
     private _keyConfig = KeyConfig
 
     get isPackageHub(){
-        return process.env.PACKAGE_HUB !== undefined
+        return process.env.PACKAGE_HUB !== '0'
     }
-    
+
     get faviconPath(){
         return path.join(this.publicPath,'favicon.ico')
     }
